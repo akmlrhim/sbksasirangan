@@ -1,7 +1,7 @@
 <x-layouts>
   <main class="w-full overflow-hidden bg-white">
 
-    <section class="relative pt-36 pb-20 md:pt-32 md:pb-32 bg-third">
+    <section class="relative pt-36 pb-20 md:pt-42 md:pb-32 bg-third">
       <div
         class="absolute top-0 left-0 w-64 h-64 bg-[#bfa15f]/10 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2">
       </div>
@@ -15,11 +15,11 @@
           </h1>
 
           <div class="flex flex-col sm:flex-row justify-center gap-4 mb-16">
-            <a href="#"
+            <a href="{{ route('contact') }}"
               class="px-8 py-3 bg-primary text-white rounded-full font-medium transition hover:bg-[#142e1f] hover:shadow-lg hover:-translate-y-1">
               Contact Us
             </a>
-            <a href="#"
+            <a href="{{ url('about-us/') }}#services"
               class="px-8 py-3 border border-primary text-primary rounded-full font-medium transition hover:bg-primary hover:text-white">
               Our Services
             </a>
@@ -86,7 +86,7 @@
     </section>
 
 
-    <section class="py-24 relative overflow-hidden bg-third" x-data="{
+    <section class="py-24 relative overflow-hidden bg-third" id="services" x-data="{
         activeSlide: 0,
         services: [{
                 icon: 'fa-leaf',
