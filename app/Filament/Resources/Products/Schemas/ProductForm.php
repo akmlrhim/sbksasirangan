@@ -54,19 +54,20 @@ class ProductForm
 
 				FileUpload::make('picture')
 					->label('Foto produk')
-					->helperText('Format: JPEG, JPG, PNG. Maksimal 2MB.')
+					->helperText('Format: JPEG, JPG, PNG. Maksimal 5MB.')
 					->image()
 					->directory('products')
 					->disk('public')
 					->visibility('public')
-					->maxSize(2048)
+					->maxSize(5120)
 					->imageEditor()
 					->acceptedFileTypes(['image/jpeg', 'image/png', 'image/jpg'])
 					->required()
 					->validationAttribute('Foto produk')
 					->validationMessages([
 						'required' => ':attribute wajib diisi.',
-						'max' => ':attribute maksimal 2 MB.',
+						'max' => ':attribute maksimal 5 MB.',
+						'accepted_file_types' => ':attribute harus format jpeg, jpg, png'
 					])
 					->columnSpanFull(),
 

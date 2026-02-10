@@ -28,11 +28,9 @@ class AdminPanelProvider extends PanelProvider
 			->id('admin')
 			->path('admin')
 			->login()
+			->profile()
+			->font('Nunito Sans')
 			->emailVerification()
-			->colors([
-				'primary' => Color::Amber,
-				'danger' => Color::Red
-			])
 			->discoverResources(in: app_path('Filament/Resources'), for: 'App\Filament\Resources')
 			->discoverPages(in: app_path('Filament/Pages'), for: 'App\Filament\Pages')
 			->pages([

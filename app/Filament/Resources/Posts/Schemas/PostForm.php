@@ -57,14 +57,16 @@ class PostForm
 				FileUpload::make('cover_image')
 					->label('Cover artikel')
 					->required()
+					->helperText('Format gambar: jpg, jpeg, png. Maksimal 5MB')
 					->acceptedFileTypes(['image/jpeg', 'image/png', 'image/jpg'])
-					->maxSize(2048)
+					->maxSize(5120)
 					->directory('insight')
 					->disk('public')
 					->validationAttribute('Cover artikel')
 					->validationMessages([
 						'required' => ':attribute wajib diisi.',
-						'max' => ':attribute maskimal 2MB.'
+						'max' => ':attribute maskimal 5MB.',
+						'accepted_file_types' => ':attribute harus berformat jpeg, png, jpg'
 					])->columnSpanFull(),
 
 				RichEditor::make('content')

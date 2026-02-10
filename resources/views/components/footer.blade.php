@@ -16,14 +16,15 @@
 
     <div class="grid grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-10 mb-12">
 
+      {{-- Brand --}}
       <div class="col-span-2 lg:col-span-1">
-        <a href="#" class="block mb-5">
+        <a href="{{ route('home') }}" class="block mb-5">
           <h2 class="font-header text-3xl md:text-4xl text-white leading-none">
-            Sasirangan <br> <span class="text-secondary italic">Banjar</span>
+            {{ __('Sasirangan') }} <br> <span class="text-secondary italic">{{ __('Banjar') }}</span>
           </h2>
         </a>
         <p class="font-sans text-white text-base leading-relaxed mb-6">
-          Weaving community resilience in Banjarbaru through the colours of local wisdom.
+          {{ __('Weaving community resilience in Banjarbaru through the colours of local wisdom.') }}
         </p>
         <div class="flex items-center gap-4">
           <a href="#"
@@ -41,41 +42,74 @@
         </div>
       </div>
 
+      {{-- Explore --}}
       <div class="col-span-1">
         <h3 class="font-header text-xl md:text-2xl text-secondary mb-5 flex items-center gap-2">
-          <span class="w-6 h-[2px] bg-secondary"></span> Explore
+          <span class="w-6 h-[2px] bg-secondary"></span> {{ __('Explore') }}
         </h3>
         <ul class="space-y-3 font-sans text-base">
-          <li><a href="#" class="text-white hover:text-secondary hover:pl-2 transition-all duration-300">Home</a>
+          <li>
+            <a href="{{ route('home') }}"
+              class="text-white hover:text-secondary hover:pl-2 transition-all duration-300">
+              {{ __('Home') }}
+            </a>
           </li>
-          <li><a href="#"
-              class="text-white hover:text-secondary hover:pl-2 transition-all duration-300">Profile</a></li>
-          <li><a href="#" class="text-white hover:text-secondary hover:pl-2 transition-all duration-300">Our
-              Works</a></li>
-          <li><a href="#" class="text-white hover:text-secondary hover:pl-2 transition-all duration-300">Shop</a>
+          <li>
+            <a href="{{ route('about-us') }}"
+              class="text-white hover:text-secondary hover:pl-2 transition-all duration-300">
+              {{ __('Profile') }}
+            </a>
+          </li>
+          <li>
+            <a href="{{ url('/') }}#works"
+              class="text-white hover:text-secondary hover:pl-2 transition-all duration-300">
+              {{ __('Our Works') }}
+            </a>
+          </li>
+          <li>
+            <a href="{{ route('shop') }}"
+              class="text-white hover:text-secondary hover:pl-2 transition-all duration-300">
+              {{ __('Shop') }}
+            </a>
           </li>
         </ul>
       </div>
 
+      {{-- Info --}}
       <div class="col-span-1">
         <h3 class="font-header text-xl md:text-2xl text-secondary mb-5 flex items-center gap-2">
-          <span class="w-6 h-[2px] bg-secondary"></span> Info
+          <span class="w-6 h-[2px] bg-secondary"></span> {{ __('Info') }}
         </h3>
         <ul class="space-y-3 font-sans text-base">
-          <li><a href="#" class="text-white hover:text-secondary hover:pl-2 transition-all duration-300">Blog</a>
+          <li>
+            <a href="{{ route('insight') }}"
+              class="text-white hover:text-secondary hover:pl-2 transition-all duration-300">
+              {{ __('Insight') }}
+            </a>
           </li>
-          <li><a href="#"
-              class="text-white hover:text-secondary hover:pl-2 transition-all duration-300">Contact</a></li>
-          <li><a href="#" class="text-white hover:text-secondary hover:pl-2 transition-all duration-300">FAQ</a>
+          <li>
+            <a href="{{ route('contact') }}"
+              class="text-white hover:text-secondary hover:pl-2 transition-all duration-300">
+              {{ __('Contact') }}
+            </a>
           </li>
-          <li><a href="#"
-              class="text-white hover:text-secondary hover:pl-2 transition-all duration-300">Privacy</a></li>
+          <li>
+            <a href="#" class="text-white hover:text-secondary hover:pl-2 transition-all duration-300">
+              {{ __('FAQ') }}
+            </a>
+          </li>
+          <li>
+            <a href="#" class="text-white hover:text-secondary hover:pl-2 transition-all duration-300">
+              {{ __('Privacy') }}
+            </a>
+          </li>
         </ul>
       </div>
 
+      {{-- Office --}}
       <div class="col-span-2 lg:col-span-1">
         <h3 class="font-header text-xl md:text-2xl text-secondary mb-5 flex items-center gap-2">
-          <span class="w-6 h-[2px] bg-secondary"></span> Office
+          <span class="w-6 h-[2px] bg-secondary"></span> {{ __('Office') }}
         </h3>
 
         <div class="space-y-4 font-sans text-base text-white mb-6">
@@ -88,7 +122,7 @@
           </div>
           <div class="flex items-center gap-3">
             <i class="fa-solid fa-envelope text-secondary"></i>
-            <a href="mailtoadmin@sasiranganbanjar.com" class="hover:text-white transition-colors">
+            <a href="mailto:admin@sasiranganbanjar.com" class="hover:text-white transition-colors">
               admin@sasiranganbanjar.com
             </a>
           </div>
@@ -98,7 +132,7 @@
 
     <div
       class="border-t border-white/10 pt-6 mt-6 flex flex-col md:flex-row justify-between items-center text-md text-white font-sans">
-      <p>&copy; {{ date('Y') }} SBK Sasirangan Banjar. All rights reserved.</p>
+      <p>&copy; {{ date('Y') }} SBK Sasirangan Banjar. {{ __('All rights reserved.') }}</p>
 
     </div>
 

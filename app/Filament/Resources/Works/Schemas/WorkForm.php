@@ -34,18 +34,18 @@ class WorkForm
 				Hidden::make('slug')->unique(ignoreRecord: true),
 
 				FileUpload::make('picture')->label('Foto kain/karya')
-					->helperText('Format: JPEG, JPG, PNG. Maksimal 2MB.')
+					->helperText('Format: JPEG, JPG, PNG. Maksimal 5MB.')
 					->image()
 					->required()
 					->directory('works')->disk('public')
-					->maxSize(2048)
+					->maxSize(5120)
 					->imageEditor()
 					->acceptedFileTypes(['image/jpeg', 'image/png', 'image/jpg'])
 					->validationAttribute('Foto kain/karya')
 					->validationMessages([
 						'required' => ':attribute wajib diisi.',
-						'max' => ':attribute maksimal 2 MB.',
-						'mime' => ':attribute harus JPEG, PNG, JPG'
+						'max' => ':attribute maksimal 5 MB.',
+						'accepted_file_types' => ':attribute harus JPEG, PNG, JPG'
 					])
 					->columnSpanFull()
 			]);

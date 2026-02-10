@@ -3,6 +3,14 @@
 use App\Http\Controllers\HomeController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Session;
+
+Route::get('lang/{locale}', function ($locale) {
+	if (in_array($locale, ['id', 'en'])) {
+		Session::put('locale', $locale);
+	}
+	return redirect()->back();
+})->name('switch.language');
 
 
 Route::middleware('throttle:30,1')->group(function () {
@@ -19,4 +27,6 @@ Route::middleware('throttle:30,1')->group(function () {
 	Route::get('article/{params}', [HomeController::class, 'article'])->name('post.show');
 	Route::get('shop', [HomeController::class, 'shop'])->name('shop');
 	Route::get('product/{params}', [HomeController::class, 'product'])->name('product.show');
+	Route::get('our-team', [HomeController::class, 'ourTeam'])->name('our-team');
+	Route::get('gallery', [HomeController::class, 'galleries'])->name('gallery');
 });

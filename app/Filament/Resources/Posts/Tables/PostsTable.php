@@ -19,7 +19,7 @@ class PostsTable
 	{
 		return $table
 			->columns([
-				ImageColumn::make('cover_image')->label('Foto cover')->disk('public'),
+				ImageColumn::make('cover_image')->label('Foto cover')->disk('public')->defaultImageUrl('https://placehold.co/400?text=No+Image'),
 
 				TextColumn::make('title')->label('Judul')
 					->sortable()

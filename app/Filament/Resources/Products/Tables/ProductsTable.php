@@ -20,7 +20,7 @@ class ProductsTable
 	{
 		return $table
 			->columns([
-				ImageColumn::make('picture')->label('Foto Produk')->disk('public'),
+				ImageColumn::make('picture')->label('Foto Produk')->disk('public')->defaultImageUrl('https://placehold.co/400?text=No+Image'),
 
 				TextColumn::make('name')->label('Nama Produk')
 					->sortable()

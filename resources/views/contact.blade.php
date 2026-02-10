@@ -1,4 +1,4 @@
-<x-layouts>
+<x-layouts :title="$title">
   <main class="w-full overflow-hidden bg-third relative pt-36 pb-20 md:pt-42 md:pb-32">
 
     <div class="absolute inset-0 pointer-events-none">
@@ -9,9 +9,11 @@
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
 
       <div class="text-center mb-12" data-aos="fade-down">
-        <span class="text-secondary font-bold tracking-[0.2em] uppercase text-sm mb-2 block">Get In Touch</span>
+        <span class="text-secondary font-bold tracking-[0.2em] uppercase text-sm mb-2 block">
+          {{ __('Get In Touch') }}
+        </span>
         <h1 class="font-header text-4xl md:text-5xl text-primary leading-tight">
-          Contact <span class="italic text-secondary">Us</span>
+          {{ __('Contact') }} <span class="italic text-secondary">{{ __('Us') }}</span>
         </h1>
       </div>
 
@@ -19,6 +21,7 @@
         class="bg-white rounded-3xl shadow-lg overflow-hidden flex flex-col md:flex-row border border-[#e6e2d8] mb-12"
         data-aos="fade-up">
 
+        {{-- Left Side: Info --}}
         <div
           class="w-full md:w-5/12 bg-primary text-white p-10 md:p-14 relative overflow-hidden flex flex-col justify-between">
 
@@ -26,7 +29,7 @@
           </div>
 
           <div>
-            <h3 class="font-header text-3xl mb-8">Information</h3>
+            <h3 class="font-header text-3xl mb-8">{{ __('Information') }}</h3>
 
             <div class="space-y-8">
               <div class="flex items-start gap-4 group">
@@ -35,7 +38,7 @@
                   <i class="fa-solid fa-envelope text-xl"></i>
                 </div>
                 <div>
-                  <p class="text-xs text-gray-400 uppercase tracking-wider font-semibold mb-1">Email</p>
+                  <p class="text-xs text-gray-400 uppercase tracking-wider font-semibold mb-1">{{ __('Email') }}</p>
                   <a href="mailto:admin@sasiranganbanjar.com"
                     class="text-md font-medium hover:text-secondary transition break-all">
                     admin@sasiranganbanjar.com
@@ -49,10 +52,9 @@
                   <i class="fa-solid fa-location-dot text-xl"></i>
                 </div>
                 <div>
-                  <p class="text-xs text-gray-400 uppercase tracking-wider font-semibold mb-1">Address</p>
+                  <p class="text-xs text-gray-400 uppercase tracking-wider font-semibold mb-1">{{ __('Address') }}</p>
                   <p class="text-md leading-snug text-gray-200">
-                    Jl. Sukarelawan Gg. Al-Manar No.2, Guntung Payung, Kec. Landasan Ulin, Kota Banjar Baru, Kalimantan
-                    Selatan 70712
+                    {{ __('Jl. Sukarelawan Gg. Al-Manar No.2, Guntung Payung, Kec. Landasan Ulin, Kota Banjar Baru, Kalimantan Selatan 70712') }}
                   </p>
                 </div>
               </div>
@@ -60,7 +62,7 @@
           </div>
 
           <div class="mt-12">
-            <p class="text-md text-white uppercase tracking-wider font-bold mb-6">Follow Our Socials</p>
+            <p class="text-md text-white uppercase tracking-wider font-bold mb-6">{{ __('Follow Our Socials') }}</p>
             <div class="space-y-4">
 
               <a href="#"
@@ -94,41 +96,47 @@
           </div>
         </div>
 
+        {{-- Right Side: Form --}}
         <div class="w-full md:w-7/12 bg-white p-10 md:p-14">
           <div class="mb-8">
-            <h3 class="font-header text-3xl text-primary">Have a Question?</h3>
-            <p class="text-gray-500 mt-2">Drop us a line and we’ll get back to you shortly.</p>
+            <h3 class="font-header text-3xl text-primary">{{ __('Have a Question?') }}</h3>
+            <p class="text-gray-500 mt-2">{{ __('Drop us a line and we’ll get back to you shortly.') }}</p>
           </div>
 
           <form action="#" method="POST" class="space-y-6">
+            @csrf
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div class="group relative">
-                <input type="text" id="name" placeholder=" "
+                <input type="text" id="name" name="name" placeholder=" " required
                   class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-primary peer border" />
                 <label for="name"
-                  class="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 peer-focus:px-2 peer-focus:text-primary peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1">Your
-                  Name</label>
+                  class="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 peer-focus:px-2 peer-focus:text-primary peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1">
+                  {{ __('Your Name') }}
+                </label>
               </div>
               <div class="group relative">
-                <input type="email" id="email" placeholder=" "
+                <input type="email" id="email" name="email" placeholder=" " required
                   class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-primary peer border" />
                 <label for="email"
-                  class="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 peer-focus:px-2 peer-focus:text-primary peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1">Email
-                  Address</label>
+                  class="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 peer-focus:px-2 peer-focus:text-primary peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1">
+                  {{ __('Email Address') }}
+                </label>
               </div>
             </div>
 
             <div class="group relative">
-              <textarea id="message" rows="4" placeholder=" "
+              <textarea id="message" name="message" rows="4" placeholder=" " required
                 class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-primary peer border resize-none"></textarea>
               <label for="message"
-                class="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 peer-focus:px-2 peer-focus:text-primary peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-8 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1">Message</label>
+                class="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 peer-focus:px-2 peer-focus:text-primary peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-8 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1">
+                {{ __('Message') }}
+              </label>
             </div>
 
             <div class="pt-2">
               <button type="submit"
                 class="w-full md:w-auto px-8 py-3 bg-[#d94826] hover:bg-[#c03c1e] text-white font-bold rounded-lg shadow-lg transition-all duration-300 flex items-center justify-center gap-2 transform hover:-translate-y-1">
-                Send Message <i class="fa-solid fa-paper-plane text-sm"></i>
+                {{ __('Send Message') }} <i class="fa-solid fa-paper-plane text-sm"></i>
               </button>
             </div>
           </form>
@@ -138,10 +146,10 @@
       <div class="w-full bg-white p-4 rounded-2xl shadow-xl border border-[#e6e2d8]" data-aos="fade-up"
         data-aos-delay="100">
         <div class="w-full h-[400px] rounded-xl overflow-hidden relative group">
-
           <iframe loading="lazy"
-            src="https://maps.google.com/maps?q=sbksasirangan&#038;t=m&#038;z=17&#038;output=embed&#038;iwloc=near"
-            title="sbksasirangan" width="100%" height="100%" aria-label="sbksasirangan"></iframe>
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3982.5273760431416!2d114.7350413749727!3d-3.464010996510343!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2de6810c9c7d4d4d%3A0x6b8f7e5b1f3c3c3c!2sJl.%20Sukarelawan%20No.2%2C%20Guntung%20Payung%2C%20Kec.%20Landasan%20Ulin%2C%20Kota%20Banjar%20Baru%2C%20Kalimantan%20Selatan%2070712!5e0!3m2!1sen!2sid!4v1680000000000!5m2!1sen!2sid"
+            title="sbksasirangan" width="100%" height="100%" style="border:0;" allowfullscreen=""
+            aria-label="sbksasirangan"></iframe>
         </div>
       </div>
 
