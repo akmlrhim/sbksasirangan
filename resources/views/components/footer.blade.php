@@ -27,15 +27,15 @@
           {{ __('Weaving community resilience in Banjarbaru through the colours of local wisdom.') }}
         </p>
         <div class="flex items-center gap-4">
-          <a href="#"
+          <a href="https://www.instagram.com/sbk.sasirangan"
             class="w-11 h-11 rounded-full bg-white/10 flex items-center justify-center text-white hover:bg-secondary hover:text-primary transition-all duration-300">
             <i class="fa-brands fa-instagram text-lg"></i>
           </a>
-          <a href="#"
+          <a href="http://wa.me/6282133331163"
             class="w-11 h-11 rounded-full bg-white/10 flex items-center justify-center text-white hover:bg-secondary hover:text-primary transition-all duration-300">
             <i class="fa-brands fa-whatsapp text-lg"></i>
           </a>
-          <a href="#"
+          <a href="https://www.tiktok.com/@sbk.sasirangan"
             class="w-11 h-11 rounded-full bg-white/10 flex items-center justify-center text-white hover:bg-secondary hover:text-primary transition-all duration-300">
             <i class="fa-brands fa-tiktok text-lg"></i>
           </a>
@@ -91,16 +91,6 @@
             <a href="{{ route('contact') }}"
               class="text-white hover:text-secondary hover:pl-2 transition-all duration-300">
               {{ __('Contact') }}
-            </a>
-          </li>
-          <li>
-            <a href="#" class="text-white hover:text-secondary hover:pl-2 transition-all duration-300">
-              {{ __('FAQ') }}
-            </a>
-          </li>
-          <li>
-            <a href="#" class="text-white hover:text-secondary hover:pl-2 transition-all duration-300">
-              {{ __('Privacy') }}
             </a>
           </li>
         </ul>

@@ -172,30 +172,34 @@
 
             <div class="flex transition-transform duration-700 ease-in-out -mx-3"
               :style="`transform: translateX(-${currentIndex * (100 / perView)}%)`">
-
               @foreach ($works as $index => $work)
-                <div class="flex-shrink-0 px-3 transition-all duration-300" :style="`width: ${100 / perView}%`">
+                @php
+                  $coverImage = count($work->picture) > 0 ? $work->picture[0] : null;
+                @endphp
 
-                  <div class="group relative overflow-hidden rounded-lg shadow-lg cursor-pointer bg-gray-100 h-full">
+                <div class="flex-shrink-0 px-3 transition-all duration-300" :style="`width: ${100 / perView}%`">
+                  <div class="group relative overflow-hidden rounded-lg cursor-pointer h-full">
 
                     <div
-                      class="aspect-[3/4] w-full bg-gray-200 flex items-center justify-center overflow-hidden relative">
+                      class="aspect-[3/4] w-full flex items-center justify-center overflow-hidden relative bg-gray-200">
 
-                      @if ($work->picture)
-                        <img src="{{ asset('storage/' . $work->picture) }}" alt="{{ $work->name }}"
+                      @if ($coverImage)
+                        <img src="{{ asset('storage/' . $coverImage) }}" alt="{{ $work->name }}"
                           class="w-full h-full object-cover transform transition-transform duration-700 ease-in-out group-hover:scale-110">
                       @else
-                        <div class="text-center group-hover:scale-110 transition-transform duration-500">
+                        <div
+                          class="text-center group-hover:scale-110 transition-transform duration-500 flex flex-col items-center justify-center h-full w-full bg-gray-100">
                           <i class="fa-regular fa-image text-5xl text-gray-400 mb-2"></i>
+                          <span class="text-xs text-gray-400">No Image</span>
                         </div>
                       @endif
 
                       <div
-                        class="absolute inset-0 bg-gradient-to-t from-primary/95 via-transparent to-transparent opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
+                        class="absolute inset-0 pointer-events-none bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
                         <div
-                          class="transform translate-y-0 md:translate-y-4 md:group-hover:translate-y-0 transition-transform duration-300">
-                          <p class="font-header text-2xl text-white italic">{{ $work->name }}</p>
-                          <div class="h-0.5 w-12 bg-secondary mt-2"></div>
+                          class="transform translate-y-0 md:translate-y-4 md:group-hover:translate-y-0 transition-transform duration-300 w-full">
+                          <p class="font-header text-2xl text-white italic drop-shadow-md">{{ $work->name }}</p>
+                          <div class="h-0.5 w-12 bg-secondary mt-2 shadow-sm"></div>
                         </div>
                       </div>
 

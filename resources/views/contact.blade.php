@@ -21,7 +21,6 @@
         class="bg-white rounded-3xl shadow-lg overflow-hidden flex flex-col md:flex-row border border-[#e6e2d8] mb-12"
         data-aos="fade-up">
 
-        {{-- Left Side: Info --}}
         <div
           class="w-full md:w-5/12 bg-primary text-white p-10 md:p-14 relative overflow-hidden flex flex-col justify-between">
 
@@ -65,7 +64,7 @@
             <p class="text-md text-white uppercase tracking-wider font-bold mb-6">{{ __('Follow Our Socials') }}</p>
             <div class="space-y-4">
 
-              <a href="#"
+              <a href="https://www.instagram.com/sbk.sasirangan"
                 class="flex items-center gap-4 group p-3 rounded-xl hover:bg-white/10 transition-all duration-300">
                 <div
                   class="w-10 h-10 rounded-full bg-white text-primary flex items-center justify-center group-hover:scale-110 transition-transform">
@@ -74,16 +73,16 @@
                 <span class="text-md font-medium group-hover:text-secondary transition-colors">Instagram</span>
               </a>
 
-              <a href="#"
+              <a href="https://www.tiktok.com/@sbk.sasirangan"
                 class="flex items-center gap-4 group p-3 rounded-xl hover:bg-white/10 transition-all duration-300">
                 <div
                   class="w-10 h-10 rounded-full bg-white text-primary flex items-center justify-center group-hover:scale-110 transition-transform">
-                  <i class="fa-brands fa-youtube text-lg"></i>
+                  <i class="fa-brands fa-tiktok text-lg"></i>
                 </div>
-                <span class="text-md font-medium group-hover:text-secondary transition-colors">Youtube</span>
+                <span class="text-md font-medium group-hover:text-secondary transition-colors">Tiktok</span>
               </a>
 
-              <a href="#"
+              <a href="http://wa.me/6282133331163"
                 class="flex items-center gap-4 group p-3 rounded-xl hover:bg-white/10 transition-all duration-300">
                 <div
                   class="w-10 h-10 rounded-full bg-white text-primary flex items-center justify-center group-hover:scale-110 transition-transform">
@@ -96,7 +95,6 @@
           </div>
         </div>
 
-        {{-- Right Side: Form --}}
         <div class="w-full md:w-7/12 bg-white p-10 md:p-14">
           <div class="mb-8">
             <h3 class="font-header text-3xl text-primary">{{ __('Have a Question?') }}</h3>

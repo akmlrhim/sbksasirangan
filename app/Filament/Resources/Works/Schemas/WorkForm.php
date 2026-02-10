@@ -34,9 +34,13 @@ class WorkForm
 				Hidden::make('slug')->unique(ignoreRecord: true),
 
 				FileUpload::make('picture')->label('Foto kain/karya')
-					->helperText('Format: JPEG, JPG, PNG. Maksimal 5MB.')
+					->helperText('Format: JPEG, JPG, PNG. Maksimal 5MB. Bisa upload multifile')
 					->image()
 					->required()
+					->multiple()
+					->reorderable()
+					->appendFiles()
+					->maxFiles(5)
 					->directory('works')->disk('public')
 					->maxSize(5120)
 					->imageEditor()

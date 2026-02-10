@@ -46,6 +46,7 @@ class UserForm
 					->password()
 					->revealable()
 					->minLength(8)
+					->visibleOn('create')
 					->placeholder('Masukkan password')
 					->validationAttribute('Password')
 					->validationMessages([

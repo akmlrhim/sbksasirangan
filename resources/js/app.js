@@ -14,5 +14,12 @@ AOS.init({
     mirror: false,
     anchorPlacement: "top-bottom",
     offset: 120,
-    disable: window.innerWidth < 768,
+
+    disable: "mobile",
+    throttleDelay: 99,
+
+    startEvent: "DOMContentLoaded",
+    useClassNames: true,
+    initClassName: "aos-init",
+    animatedClassName: "aos-animate",
 });
