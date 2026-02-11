@@ -101,11 +101,29 @@
             <p class="text-gray-500 mt-2">{{ __('Drop us a line and we’ll get back to you shortly.') }}</p>
           </div>
 
-          <form action="#" method="POST" class="space-y-6">
+          <form x-data="{
+              loading: false,
+              name: '',
+              email: '',
+              message: '',
+              sendToWA() {
+                  this.loading = true;
+                  const waNumber = '628XXXXXXXXXX'; // Ganti dengan nomor WA tujuan
+                  const text = `*Halo Sasirangan Banjar!*%0A%0A` +
+                      `*Nama:* ${this.name}%0A` +
+                      `*Email:* ${this.email}%0A` +
+                      `*Pesan:* ${this.message}`;
+          
+                  window.open(`https://wa.me/${waNumber}?text=${text}`, '_blank');
+          
+                  // Re-enable button setelah 3 detik
+                  setTimeout(() => { this.loading = false }, 3000);
+              }
+          }" @submit.prevent="sendToWA" method="POST" class="space-y-6">
             @csrf
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div class="group relative">
-                <input type="text" id="name" name="name" placeholder=" " required
+                <input type="text" id="name" name="name" x-model="name" placeholder="Your name" required
                   class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-primary peer border" />
                 <label for="name"
                   class="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 peer-focus:px-2 peer-focus:text-primary peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1">
@@ -113,7 +131,7 @@
                 </label>
               </div>
               <div class="group relative">
-                <input type="email" id="email" name="email" placeholder=" " required
+                <input type="email" id="email" name="email" x-model="email" placeholder="Your email" required
                   class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-primary peer border" />
                 <label for="email"
                   class="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 peer-focus:px-2 peer-focus:text-primary peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1">
@@ -123,7 +141,7 @@
             </div>
 
             <div class="group relative">
-              <textarea id="message" name="message" rows="4" placeholder=" " required
+              <textarea id="message" name="message" x-model="message" rows="4" placeholder="Your message" required
                 class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-primary peer border resize-none"></textarea>
               <label for="message"
                 class="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 peer-focus:px-2 peer-focus:text-primary peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-8 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1">
@@ -132,9 +150,28 @@
             </div>
 
             <div class="pt-2">
-              <button type="submit"
+              <button type="submit" :disabled="loading" :class="loading ? 'opacity-50 cursor-not-allowed' : ''"
                 class="w-full md:w-auto px-8 py-3 bg-[#d94826] hover:bg-[#c03c1e] text-white font-bold rounded-lg shadow-lg transition-all duration-300 flex items-center justify-center gap-2 transform hover:-translate-y-1">
-                {{ __('Send Message') }} <i class="fa-solid fa-paper-plane text-sm"></i>
+
+                <template x-if="!loading">
+                  <div class="flex items-center gap-2">
+                    {{ __('Send Message') }} <i class="fa-solid fa-paper-plane text-sm"></i>
+                  </div>
+                </template>
+
+                <template x-if="loading">
+                  <div class="flex items-center gap-2">
+                    <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none"
+                      viewBox="0 0 24 24">
+                      <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                        stroke-width="4"></circle>
+                      <path class="opacity-75" fill="currentColor"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                      </path>
+                    </svg>
+                    <span>Sending...</span>
+                  </div>
+                </template>
               </button>
             </div>
           </form>

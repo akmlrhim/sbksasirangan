@@ -28,7 +28,7 @@ class AdminPanelProvider extends PanelProvider
 			->id('admin')
 			->path('admin')
 			->login()
-			->font('Source Sans 3')
+			->font('Google Sans', 'https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&display=swap')
 			->profile()
 			->emailVerification()
 			->discoverResources(in: app_path('Filament/Resources'), for: 'App\Filament\Resources')

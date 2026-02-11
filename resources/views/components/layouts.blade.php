@@ -15,7 +15,7 @@
     rel="stylesheet">
 
   {{-- preload img  --}}
-  <link rel="preload" as="image" href="{{ asset('img/hero.webp') }}" fetchpriority="high">
+  <link rel="preload" as="image" href="{{ asset('img/hero.webp') }}" as="image">
 
   <link rel="icon" type="image/png" href="{{ asset('logo.png') }}" />
   <link rel="shortcut icon" href="{{ asset('logo.png') }}" />

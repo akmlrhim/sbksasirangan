@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Cache;
 
 class Work extends Model
 {
@@ -28,6 +29,12 @@ class Work extends Model
 
 			set: fn($value) => is_array($value) ? json_encode($value) : $value,
 		);
+	}
+
+	protected static function booted()
+	{
+		static::saved(fn() => Cache::forget('works_list'));
+		static::deleted(fn() => Cache::forget('works_list'));
 	}
 
 	public function getRouteKeyName()

@@ -146,7 +146,7 @@
                 </div>
                 <h3 class="text-3xl font-header text-primary">{{ __('No Products Found') }}</h3>
                 <p class="text-gray-500 mt-2">
-                  @if (filled($search) || filled($category))
+                  @if (filled($search) || filled($categories))
                     {{ __("We couldn't find any products matching your criteria.") }}
                   @else
                     {{ __('No products found at the moment. Please check back later.') }}

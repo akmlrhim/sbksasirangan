@@ -86,40 +86,40 @@
       </div>
     </section>
 
-    {{-- Services Section (Alpine JS Translatable) --}}
+    {{-- Service Section  --}}
     <section class="py-24 relative overflow-hidden bg-third" id="services" x-data="{
         activeSlide: 0,
         services: [{
                 icon: 'fa-leaf',
-                title: '{{ __('Sustainable Fashion') }}',
-                desc: '{{ __('Fashion can be eco-friendly through our dedicated sustainable practices.') }}'
+                title: '{{ addslashes(__('Sustainable Fashion')) }}',
+                desc: '{{ addslashes(__('Fashion can be eco-friendly through our dedicated sustainable practices.')) }}'
             },
             {
                 icon: 'fa-school',
-                title: '{{ __('Artistic Educational') }}',
-                desc: '{{ __('All of us can join the workshop online or offline to learn the craft.') }}'
+                title: '{{ addslashes(__('Artistic Educational')) }}',
+                desc: '{{ addslashes(__('All of us can join the workshop online or offline to learn the craft.')) }}'
             },
             {
                 icon: 'fa-handshake',
-                title: '{{ __('Partnership for Global Goals') }}',
-                desc: '{{ __('Partnerships between governments, private and public bodies bring our goals closer.') }}'
+                title: '{{ addslashes(__('Partnership for Global Goals')) }}',
+                desc: '{{ addslashes(__('Partnerships between governments, private and public bodies bring our goals closer.')) }}'
             },
             {
                 icon: 'fa-users',
-                title: '{{ __('Community Empowerment') }}',
-                desc: '{{ __('We promote community and women’s empowerment by fair-trade and ethical approach.') }}'
+                title: '{{ addslashes(__('Community Empowerment')) }}',
+                desc: '{{ addslashes(__('We promote community and women’s empowerment by fair-trade and ethical approach.')) }}'
             },
             {
                 icon: 'fa-chart-line',
-                title: '{{ __('Economic Resilience') }}',
-                desc: '{{ __('We collaborate to increase our economic resilience and stability.') }}'
+                title: '{{ addslashes(__('Economic Resilience')) }}',
+                desc: '{{ addslashes(__('We collaborate to increase our economic resilience and stability.')) }}'
             }
         ],
         next() {
-            this.activeSlide = this.activeSlide === this.services.length - 1 ? 0 : this.activeSlide + 1;
+            this.activeSlide = (this.activeSlide === this.services.length - 1) ? 0 : this.activeSlide + 1;
         },
         prev() {
-            this.activeSlide = this.activeSlide === 0 ? this.services.length - 1 : this.activeSlide - 1;
+            this.activeSlide = (this.activeSlide === 0) ? this.services.length - 1 : this.activeSlide - 1;
         },
         goTo(index) {
             this.activeSlide = index;
@@ -135,7 +135,6 @@
       </div>
 
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-
         <div class="text-center mb-10 md:mb-16" data-aos="fade-up">
           <span class="inline-block py-1 px-3 rounded-full text-secondary font-bold tracking-[0.2em] uppercase text-md">
             {{ __('What We Do') }}
@@ -152,7 +151,7 @@
               <template x-for="(service, index) in services" :key="index">
                 <div class="w-full flex-shrink-0 px-1">
                   <div
-                    class="bg-white p-8 rounded-2xl shadow-xl border-b-4 border-transparent h-full flex flex-col items-center text-center">
+                    class="bg-white p-8 rounded-2xl border-b-4 border-transparent h-full flex flex-col items-center text-center">
                     <div class="w-16 h-16 bg-third/20 rounded-2xl flex items-center justify-center mb-6">
                       <i :class="`fa-solid ${service.icon}`" class="text-3xl text-primary"></i>
                     </div>
@@ -164,19 +163,20 @@
             </div>
           </div>
 
+          {{-- Tombol Navigasi Mobile --}}
           <button @click="prev()"
-            class="absolute top-1/2 left-0 -translate-y-1/2 -translate-x-2 bg-white/10 hover:bg-[#bfa15f] text-white hover:text-primary w-10 h-10 rounded-full flex items-center justify-center backdrop-blur-md transition-all shadow-md">
+            class="absolute top-1/2 left-0 -translate-y-1/2 -translate-x-2 bg-primary text-white w-10 h-10 rounded-full flex items-center justify-center shadow-lg z-20">
             <i class="fa-solid fa-chevron-left"></i>
           </button>
           <button @click="next()"
-            class="absolute top-1/2 right-0 -translate-y-1/2 translate-x-2 bg-white/10 hover:bg-[#bfa15f] text-white hover:text-primary w-10 h-10 rounded-full flex items-center justify-center backdrop-blur-md transition-all shadow-md">
+            class="absolute top-1/2 right-0 -translate-y-1/2 translate-x-2 bg-primary text-white w-10 h-10 rounded-full flex items-center justify-center shadow-lg z-20">
             <i class="fa-solid fa-chevron-right"></i>
           </button>
 
           <div class="flex justify-center gap-2 mt-6">
             <template x-for="(service, index) in services" :key="index">
               <button @click="goTo(index)" class="h-2 rounded-full transition-all duration-300"
-                :class="activeSlide === index ? 'w-8 bg-[#bfa15f]' : 'w-2 bg-gray-300 hover:bg-gray-400'">
+                :class="activeSlide === index ? 'w-8 bg-secondary' : 'w-2 bg-gray-300'">
               </button>
             </template>
           </div>
@@ -187,14 +187,13 @@
           <div class="grid grid-cols-3 gap-8 mb-8">
             <template x-for="(service, index) in services.slice(0, 3)" :key="index">
               <div
-                class="group bg-white p-8 rounded-2xl shadow-xl transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl border-b-4 border-transparent hover:border-[#bfa15f]"
-                data-aos="fade-up" :data-aos-delay="index * 100">
+                class="group bg-white p-8 rounded-2xl shadow-xl transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl border-b-4 border-transparent hover:border-secondary">
                 <div
                   class="w-16 h-16 bg-third/20 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-primary transition-colors duration-300">
                   <i :class="`fa-solid ${service.icon}`"
-                    class="text-3xl text-primary group-hover:text-[#bfa15f] transition-colors duration-300"></i>
+                    class="text-3xl text-primary group-hover:text-secondary transition-colors duration-300"></i>
                 </div>
-                <h3 class="font-header text-2xl text-primary mb-3 group-hover:text-[#bfa15f] transition-colors"
+                <h3 class="font-header text-2xl text-primary mb-3 group-hover:text-secondary transition-colors"
                   x-text="service.title"></h3>
                 <p class="text-gray-500 leading-relaxed text-md" x-text="service.desc"></p>
               </div>
@@ -202,23 +201,21 @@
           </div>
 
           <div class="grid grid-cols-2 gap-8 w-2/3 mx-auto">
-            <template x-for="(service, index) in services.slice(3, 5)" :key="index + 3">
+            <template x-for="(service, index) in services.slice(3, 5)" :key="'second-' + index">
               <div
-                class="group bg-white p-8 rounded-2xl shadow-xl transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl border-b-4 border-transparent hover:border-[#bfa15f]"
-                data-aos="fade-up" :data-aos-delay="(index + 3) * 100">
+                class="group bg-white p-8 rounded-2xl shadow-xl transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl border-b-4 border-transparent hover:border-secondary">
                 <div
                   class="w-16 h-16 bg-third/20 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-primary transition-colors duration-300">
                   <i :class="`fa-solid ${service.icon}`"
-                    class="text-3xl text-primary group-hover:text-[#bfa15f] transition-colors duration-300"></i>
+                    class="text-3xl text-primary group-hover:text-secondary transition-colors duration-300"></i>
                 </div>
-                <h3 class="font-header text-2xl text-primary mb-3 group-hover:text-[#bfa15f] transition-colors"
+                <h3 class="font-header text-2xl text-primary mb-3 group-hover:text-secondary transition-colors"
                   x-text="service.title"></h3>
                 <p class="text-gray-500 leading-relaxed text-md" x-text="service.desc"></p>
               </div>
             </template>
           </div>
         </div>
-
       </div>
     </section>
 

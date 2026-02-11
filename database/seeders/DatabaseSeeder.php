@@ -21,12 +21,13 @@ class DatabaseSeeder extends Seeder
 		User::factory()->create([
 			'name' => 'Admin',
 			'email' => 'admin@sasiranganbanjar.com',
+			''
 		]);
 
-		$this->call([
-			PostSeeder::class,
-			ProductSeeder::class,
-			WorkSeeder::class
-		]);
+		// $this->call([
+		// 	PostSeeder::class,
+		// 	ProductSeeder::class,
+		// 	WorkSeeder::class
+		// ]);
 	}
 }

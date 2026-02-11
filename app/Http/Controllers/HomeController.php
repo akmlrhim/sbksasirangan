@@ -8,13 +8,17 @@ use App\Models\Product;
 use App\Models\Team;
 use App\Models\Work;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class HomeController extends Controller
 {
 	public function index()
 	{
 		$title = 'Home';
-		$works = Work::select('name', 'picture')->get();
+
+		$works = Cache::remember('works_list', now()->addDays(1), function () {
+			return Work::select('name', 'picture')->get();
+		});
 
 		return view('home', compact('works', 'title'));
 	}
