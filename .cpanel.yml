@@ -3,5 +3,3 @@ deployment:
     - export DEPLOYPATH=/home/sasz8944/public_html
     - /bin/cp .htaccess $DEPLOYPATH
     - /bin/cp -r public/* $DEPLOYPATH
-    - /bin/rm -rf $DEPLOYPATH/storage
-    - /bin/ln -sf /home/sasz8944/sbksasirangan/storage/app/public $DEPLOYPATH/storage
