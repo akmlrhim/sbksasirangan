@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 
 define('LARAVEL_START', microtime(true));
 
+// Keluar dari public_html, masuk ke repositories/sbksasirangan
 if (file_exists($maintenance = __DIR__ . '/../repositories/sbksasirangan/storage/framework/maintenance.php')) {
 	require $maintenance;
 }

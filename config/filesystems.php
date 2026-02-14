@@ -40,10 +40,9 @@ return [
 
 		'public' => [
 			'driver' => 'local',
-			'root' => base_path('../public_html/storage'),
+			'root' => base_path('../../public_html/storage'), // Mundur 2 kali untuk keluar ke /home/sasz8944/
 			'url' => env('APP_URL') . '/storage',
 			'visibility' => 'public',
-			'throw' => false,
 		],
 
 		's3' => [
