@@ -128,15 +128,16 @@ class HomeController extends Controller
 			'biography',
 			'role',
 			'profile_picture'
-		)->latest()->get();
+		)->get();
 
-		$management = $allTeams->filter(function ($item) {
-			return strtolower($item->role) !== 'artisan';
-		});
+	$management = $allTeams->filter(function ($item) {
+        return strtolower($item->role) === 'team';
+    });
 
-		$artisans = $allTeams->filter(function ($item) {
-			return strtolower($item->role) === 'team';
-		});
+
+    $artisans = $allTeams->filter(function ($item) {
+        return strtolower($item->role) === 'artisan';
+    });
 
 		return view('ourteam', compact('management', 'artisans', 'title'));
 	}
