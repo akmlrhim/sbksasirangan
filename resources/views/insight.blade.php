@@ -65,34 +65,37 @@
         </p>
       </div>
 
-      <div class="max-w-xl mx-auto mb-16" data-aos="fade-up">
-        <form @submit.prevent="activeCategory = null; applyFilter()" class="relative group">
-          <input type="text" x-model="search" placeholder="{{ __('Search articles...') }}"
-            class="w-full pl-6 pr-16 py-4 rounded-full bg-white border border-[#e6e2d8] focus:border-secondary focus:ring-0 text-primary placeholder-gray-400 shadow-inner transition-all duration-300">
-          <button type="submit"
-            class="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-secondary">
-            <i class="fa-solid fa-magnifying-glass"></i>
-          </button>
-        </form>
-      </div>
+      @if ($posts && count($posts) > 0)
+        <div class="max-w-xl mx-auto mb-16" data-aos="fade-up">
+          <form @submit.prevent="activeCategory = null; applyFilter()" class="relative group">
+            <input type="text" x-model="search" placeholder="{{ __('Search articles...') }}"
+              class="w-full pl-6 pr-16 py-4 rounded-full bg-white border border-[#e6e2d8] focus:border-secondary focus:ring-0 text-primary placeholder-gray-400 shadow-inner transition-all duration-300">
+            <button type="submit"
+              class="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-secondary">
+              <i class="fa-solid fa-magnifying-glass"></i>
+            </button>
+          </form>
+        </div>
 
-      <div class="flex flex-wrap justify-center gap-4 mb-12" data-aos="fade-up">
-        <button @click="activeCategory = null; search = ''; applyFilter()"
-          :class="!activeCategory ? 'bg-primary text-white shadow-lg' :
-              'bg-white text-gray-500 hover:text-primary border border-[#e6e2d8] shadow-sm'"
-          class="px-6 py-2 rounded-full font-medium transition cursor-pointer">
-          {{ __('All Posts') }}
-        </button>
-
-        @foreach ($categories as $cat)
-          <button @click="activeCategory = '{{ $cat }}'; applyFilter()"
-            :class="activeCategory === '{{ $cat }}' ? 'bg-primary text-white shadow-lg' :
+        <div class="flex flex-wrap justify-center gap-4 mb-12" data-aos="fade-up">
+          <button @click="activeCategory = null; search = ''; applyFilter()"
+            :class="!activeCategory ? 'bg-primary text-white shadow-lg' :
                 'bg-white text-gray-500 hover:text-primary border border-[#e6e2d8] shadow-sm'"
             class="px-6 py-2 rounded-full font-medium transition cursor-pointer">
-            {{ ucfirst($cat) }}
+            {{ __('All Posts') }}
           </button>
-        @endforeach
-      </div>
+
+          @foreach ($categories as $cat)
+            <button @click="activeCategory = '{{ $cat }}'; applyFilter()"
+              :class="activeCategory === '{{ $cat }}' ? 'bg-primary text-white shadow-lg' :
+                  'bg-white text-gray-500 hover:text-primary border border-[#e6e2d8] shadow-sm'"
+              class="px-6 py-2 rounded-full font-medium transition cursor-pointer">
+              {{ ucfirst($cat) }}
+            </button>
+          @endforeach
+        </div>
+      @endif
+
 
       <div id="fragment-container" @click="handlePagination($event)"
         :class="{ 'opacity-50 pointer-events-none': isLoading }" class="transition-opacity duration-300 min-h-[400px]">
@@ -237,10 +240,6 @@
               <p class="text-gray-500 max-w-md mx-auto mb-8 font-sans">
                 {{ __('No articles found matching your criteria.') }}
               </p>
-              <button @click="activeCategory = null; search = ''; applyFilter()"
-                class="px-8 py-3 bg-primary text-white rounded-full font-bold shadow-lg hover:bg-secondary transition-all transform hover:-translate-y-1">
-                {{ __('View All Posts') }}
-              </button>
             </div>
           @endif
 

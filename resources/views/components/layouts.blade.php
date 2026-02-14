@@ -15,13 +15,36 @@
     rel="stylesheet">
 
   {{-- preload img  --}}
-  <link rel="preload" as="image" href="{{ asset('img/hero.webp') }}" as="image">
+  @if (request()->routeIs('home'))
+    <link rel="preload" href="{{ asset('img/hero.webp') }}" as="image">
+  @endif
 
   <link rel="icon" type="image/png" href="{{ asset('logo.png') }}" />
   <link rel="shortcut icon" href="{{ asset('logo.png') }}" />
   <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('logo.png') }}" />
   <meta name="apple-mobile-web-app-title" content="SBK Sasirangan" />
   <link rel="manifest" href="{{ asset('favicon/site.webmanifest') }}" />
+
+  <meta name="description"
+    content="SBK Sasirangan Banjar oleh Reni Andrina Rahmawati menyediakan kain tradisional Sasirangan khas Kalimantan Selatan dengan pewarna alami ramah lingkungan dan pemberdayaan komunitas.">
+  <meta name="keywords"
+    content="Sasirangan, SBK Sasirangan, Sasirangan Banjar, kain tradisional, pewarna alami, Kalimantan Selatan, Reni Andrina Rahmawati, fashion berkelanjutan">
+  <meta name="author" content="Reni Andrina Rahmawati">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="{{ url()->current() }}">
+
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://sasiranganbanjar.com/">
+  <meta property="og:title" content="SBK Sasirangan Banjar - Warisan Budaya Kalimantan Selatan">
+  <meta property="og:description"
+    content="Temukan keindahan kain Sasirangan dengan pewarna alami dan dukung pemberdayaan perajin lokal di Banjarbaru.">
+  <meta property="og:image" content="{{ asset('logo.png') }}">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:url" content="https://sasiranganbanjar.com/">
+  <meta name="twitter:title" content="SBK Sasirangan Banjar">
+  <meta name="twitter:description" content="Kain Sasirangan tradisional dengan pendekatan etis dan ramah lingkungan.">
+  <meta name="twitter:image" content="{{ asset('logo.png') }}">
 
   <!-- Styles / Scripts -->
   @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))

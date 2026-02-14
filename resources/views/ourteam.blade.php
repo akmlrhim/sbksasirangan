@@ -93,8 +93,6 @@
 
       <section class="py-24">
         <div class="text-center max-w-3xl mx-auto mb-20" data-aos="fade-up">
-          <span
-            class="inline-block py-1.5 px-4 rounded-full bg-primary/5 text-primary text-xs font-bold tracking-widest uppercase mb-4 border border-primary/10">{{ __('PEOPLE OF SBK') }}</span>
           <h2 class="font-header text-4xl md:text-5xl text-primary leading-tight">
             {{ __('Dedication Behind the') }} <br>
             <span class="text-[#eec04b] italic font-header">{{ __('Work of Sasirangan') }}</span>

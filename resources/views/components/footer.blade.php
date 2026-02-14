@@ -23,9 +23,6 @@
             {{ __('Sasirangan') }} <br> <span class="text-secondary italic">{{ __('Banjar') }}</span>
           </h2>
         </a>
-        <p class="font-sans text-white text-base leading-relaxed mb-6">
-          {{ __('Weaving community resilience in Banjarbaru through the colours of local wisdom.') }}
-        </p>
         <div class="flex items-center gap-4">
           <a href="https://www.instagram.com/sbk.sasirangan"
             class="w-11 h-11 rounded-full bg-white/10 flex items-center justify-center text-white hover:bg-secondary hover:text-primary transition-all duration-300">

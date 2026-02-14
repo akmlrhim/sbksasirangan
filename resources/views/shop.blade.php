@@ -65,37 +65,39 @@
         </p>
       </div>
 
-      <div
-        class="mb-10 flex flex-col lg:flex-row justify-between items-center gap-6 bg-white p-5 rounded-2xl shadow-sm border border-[#e6e2d8]"
-        data-aos="fade-up">
+      @if ($products && count($products) > 0)
+        <div
+          class="mb-10 flex flex-col lg:flex-row justify-between items-center gap-6 bg-white p-5 rounded-2xl shadow-sm border border-[#e6e2d8]"
+          data-aos="fade-up">
 
-        <div class="flex gap-2 overflow-x-auto w-full lg:w-auto pb-2 lg:pb-0 hide-scrollbar flex-1">
-          <button @click="activeCategory = null; search = ''; applyFilter()"
-            :class="!activeCategory ? 'bg-primary text-white shadow-md' :
-                'bg-[#fdfbf7] text-gray-600 border border-gray-200 hover:text-primary'"
-            class="px-6 py-2.5 rounded-full text-sm font-medium whitespace-nowrap transition cursor-pointer">
-            {{ __('All Items') }}
-          </button>
-
-          @foreach ($categories as $cat)
-            <button @click="activeCategory = '{{ $cat }}'; applyFilter()"
-              :class="activeCategory === '{{ $cat }}' ? 'bg-primary text-white shadow-md' :
+          <div class="flex gap-2 overflow-x-auto w-full lg:w-auto pb-2 lg:pb-0 hide-scrollbar flex-1">
+            <button @click="activeCategory = null; search = ''; applyFilter()"
+              :class="!activeCategory ? 'bg-primary text-white shadow-md' :
                   'bg-[#fdfbf7] text-gray-600 border border-gray-200 hover:text-primary'"
               class="px-6 py-2.5 rounded-full text-sm font-medium whitespace-nowrap transition cursor-pointer">
-              {{ ucfirst($cat) }}
+              {{ __('All Items') }}
             </button>
-          @endforeach
-        </div>
 
-        <form @submit.prevent="applyFilter()" class="relative w-full md:w-[400px] lg:w-[450px]">
-          <input type="text" x-model="search" placeholder="{{ __('Search products...') }}"
-            class="w-full pl-6 py-3 rounded-full bg-[#fdfbf7] border border-gray-200 focus:border-secondary focus:ring-1 focus:ring-secondary outline-none text-sm text-primary transition shadow-inner">
-          <button type="submit"
-            class="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-secondary">
-            <i class="fa-solid fa-magnifying-glass"></i>
-          </button>
-        </form>
-      </div>
+            @foreach ($categories as $cat)
+              <button @click="activeCategory = '{{ $cat }}'; applyFilter()"
+                :class="activeCategory === '{{ $cat }}' ? 'bg-primary text-white shadow-md' :
+                    'bg-[#fdfbf7] text-gray-600 border border-gray-200 hover:text-primary'"
+                class="px-6 py-2.5 rounded-full text-sm font-medium whitespace-nowrap transition cursor-pointer">
+                {{ ucfirst($cat) }}
+              </button>
+            @endforeach
+          </div>
+
+          <form @submit.prevent="applyFilter()" class="relative w-full md:w-[400px] lg:w-[450px]">
+            <input type="text" x-model="search" placeholder="{{ __('Search products...') }}"
+              class="w-full pl-6 py-3 rounded-full bg-[#fdfbf7] border border-gray-200 focus:border-secondary focus:ring-1 focus:ring-secondary outline-none text-sm text-primary transition shadow-inner">
+            <button type="submit"
+              class="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-secondary">
+              <i class="fa-solid fa-magnifying-glass"></i>
+            </button>
+          </form>
+        </div>
+      @endif
 
       <div id="product-container" @click="handlePagination($event)"
         :class="{ 'opacity-50 pointer-events-none': isLoading }" class="transition-opacity duration-300 min-h-[400px]">

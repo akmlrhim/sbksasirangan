@@ -8,22 +8,11 @@ use Illuminate\Support\Facades\Session;
 
 Route::get('lang/{locale}', function ($locale) {
 	if (in_array($locale, ['id', 'en'])) {
-		Session::put('locale', $locale);
+		session()->put('locale', $locale);
+		return response()->json(['status' => 'success']);
 	}
-	return response()->noContent();
+	return response()->json(['status' => 'error'], 400);
 })->name('switch.language');
-
-Route::get('/test-email', function () {
-	try {
-		Mail::raw('Tes email dari Sasirangan Banjar', function ($msg) {
-			$msg->to('akmalrahim376@gmail.com')
-				->subject('Tes Koneksi SMTP');
-		});
-		return 'Email berhasil dikirim! Cek inbox/spam.';
-	} catch (\Exception $e) {
-		return 'Error: ' . $e->getMessage();
-	}
-});
 
 Route::middleware('throttle:30,1')->group(function () {
 	Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
