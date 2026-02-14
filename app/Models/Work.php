@@ -31,6 +31,10 @@ class Work extends Model
 		);
 	}
 
+	protected $casts = [
+		'picture' => 'array',
+	];
+
 	protected static function booted()
 	{
 		static::saved(fn() => Cache::forget('works_list'));
