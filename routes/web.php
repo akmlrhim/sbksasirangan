@@ -15,13 +15,13 @@ Route::get('lang/{locale}', function ($locale) {
 
 Route::middleware('throttle:30,1')->group(function () {
 
-	Route::get('/bersihkan-cache', function () {
-		try {
-			Artisan::call('optimize:clear');
-			return '<h1>Berhasil!</h1> <p>Semua cache (Config, Route, View) sudah dibersihkan.</p>';
-		} catch (\Exception $e) {
-			return 'Gagal: ' . $e->getMessage();
-		}
+	Route::get('/server-setup', function () {
+		Artisan::call('migrate --force');
+		Artisan::call('config:cache');
+		Artisan::call('route:cache');
+		Artisan::call('view:cache');
+
+		return "Migrasi dan Cache Berhasil diperbarui!";
 	});
 
 
