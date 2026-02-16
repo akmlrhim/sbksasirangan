@@ -70,7 +70,7 @@ class TeamsTable
 					])
 					->placeholder('Semua Role'),
 			])
-			->defaultSort('role', 'asc')
+			->defaultSort('role', 'desc')
 			->recordActions([
 				ViewAction::make(),
 				EditAction::make(),
