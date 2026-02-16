@@ -7,9 +7,10 @@ use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
-use Filament\Support\Icons\Heroicon;
+// use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Support\Str;
 
@@ -61,8 +62,15 @@ class TeamsTable
 					->color('success'),
 			])
 			->filters([
-				//
+				SelectFilter::make('role')
+					->label('Filter Role')
+					->options([
+						'team' => 'Team',
+						'artisan' => 'Artisan',
+					])
+					->placeholder('Semua Role'),
 			])
+			->defaultSort('role', 'asc')
 			->recordActions([
 				ViewAction::make(),
 				EditAction::make(),

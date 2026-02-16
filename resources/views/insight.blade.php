@@ -30,21 +30,8 @@
             if (this.search) params.append('search', this.search);
     
             let queryString = params.toString();
-    
-            const url = queryString ?
-                `{{ route('insight') }}?${queryString}` :
-                `{{ route('insight') }}`;
-    
+            const url = queryString ? `{{ route('insight') }}?${queryString}` : `{{ route('insight') }}`;
             this.fetchData(url);
-        },
-    
-        handlePagination(e) {
-            const link = e.target.closest('a');
-            if (!link) return;
-            if (link.classList.contains('read-more-link')) return;
-    
-            e.preventDefault();
-            this.fetchData(link.href);
         }
     }">
 
@@ -65,9 +52,9 @@
         </p>
       </div>
 
-      @if ($posts && count($posts) > 0)
+      @if ($posts->count() > 0 || request('search') || request('category'))
         <div class="max-w-xl mx-auto mb-16" data-aos="fade-up">
-          <form @submit.prevent="activeCategory = null; applyFilter()" class="relative group">
+          <form @submit.prevent="applyFilter()" class="relative group">
             <input type="text" x-model="search" placeholder="{{ __('Search articles...') }}"
               class="w-full pl-6 pr-16 py-4 rounded-full bg-white border border-[#e6e2d8] focus:border-secondary focus:ring-0 text-primary placeholder-gray-400 shadow-inner transition-all duration-300">
             <button type="submit"
@@ -78,7 +65,7 @@
         </div>
 
         <div class="flex flex-wrap justify-center gap-4 mb-12" data-aos="fade-up">
-          <button @click="activeCategory = null; search = ''; applyFilter()"
+          <button @click="activeCategory = ''; search = ''; applyFilter()"
             :class="!activeCategory ? 'bg-primary text-white shadow-lg' :
                 'bg-white text-gray-500 hover:text-primary border border-[#e6e2d8] shadow-sm'"
             class="px-6 py-2 rounded-full font-medium transition cursor-pointer">
@@ -96,12 +83,11 @@
         </div>
       @endif
 
-
-      <div id="fragment-container" @click="handlePagination($event)"
+      <div id="fragment-container"
+        @click="if($event.target.closest('a') && !$event.target.closest('.read-more-link')) { $event.preventDefault(); fetchData($event.target.closest('a').href); }"
         :class="{ 'opacity-50 pointer-events-none': isLoading }" class="transition-opacity duration-300 min-h-[400px]">
 
         @fragment('posts-area')
-
           @if ($posts->count() > 0)
             @if ($posts->onFirstPage() && !request('search') && !request('category'))
               @php $featured = $posts->first(); @endphp
@@ -118,12 +104,11 @@
                           ? '<img src="' . asset('storage/' . $featured->cover_image) . '" class="w-full h-full object-cover">'
                           : '<i class="fa-solid fa-image text-gray-400 text-3xl"></i>' !!}
                     </div>
-                    <div class="absolute inset-0 bg-primary/10"></div>
                   </div>
-                  <div class="p-8 lg:p-12 flex flex-col justify-center relative">
+                  <div class="p-8 lg:p-12 flex flex-col justify-center">
                     <div class="flex items-center gap-4 text-sm text-gray-400 mb-4 font-sans">
-                      <span><i class="fa-regular fa-calendar mr-2"></i>
-                        {{ $featured->created_at->translatedFormat('d M Y') }}</span>
+                      <span><i
+                          class="fa-regular fa-calendar mr-2"></i>{{ $featured->created_at->translatedFormat('d M Y') }}</span>
                     </div>
                     <h2
                       class="font-header text-3xl md:text-4xl text-primary mb-6 leading-snug group-hover:text-secondary transition-colors duration-300">
@@ -131,7 +116,7 @@
                     </h2>
                     <p class="text-gray-500 mb-8 leading-relaxed line-clamp-3">{{ strip_tags($featured->content) }}</p>
                     <a href="{{ route('post.show', $featured->slug) }}"
-                      class="read-more-link inline-flex items-center text-primary font-bold tracking-wide border-b-2 border-secondary pb-1 hover:text-secondary transition-colors self-start group/link">
+                      class="read-more-link inline-flex items-center text-primary font-bold border-b-2 border-secondary pb-1 hover:text-secondary self-start group/link">
                       {{ __('Read Full Story') }} <i
                         class="fa-solid fa-arrow-right ml-2 transition-transform group-hover/link:translate-x-1"></i>
                     </a>
@@ -150,15 +135,12 @@
                 <div
                   class="bg-white rounded-2xl overflow-hidden shadow-lg border border-[#e6e2d8] transition-all duration-300 group"
                   data-aos="fade-up">
-                  <div class="relative h-60 overflow-hidden">
-                    <div
-                      class="relative w-full h-full overflow-hidden bg-gray-100 flex items-center justify-center group">
-                      {!! $post->cover_image
-                          ? '<img src="' .
-                              asset('storage/' . $post->cover_image) .
-                              '" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">'
-                          : '<i class="fa-solid fa-image text-gray-400 text-4xl group-hover:scale-110 transition-transform duration-500"></i>' !!}
-                    </div>
+                  <div class="relative h-60 overflow-hidden bg-gray-100 flex items-center justify-center">
+                    {!! $post->cover_image
+                        ? '<img src="' .
+                            asset('storage/' . $post->cover_image) .
+                            '" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">'
+                        : '<i class="fa-solid fa-image text-gray-400 text-4xl"></i>' !!}
                   </div>
                   <div class="p-8">
                     <div class="flex items-center gap-2 text-xs text-gray-400 mb-3 font-sans">
@@ -166,12 +148,11 @@
                     </div>
                     <h3
                       class="font-header text-2xl text-primary mb-3 leading-tight group-hover:text-secondary transition-colors">
-                      {{ $post->title }}
-                    </h3>
-                    <p class="text-gray-500 text-sm sm:text-md leading-relaxed mb-6 line-clamp-3">
-                      {{ strip_tags($post->content) }}</p>
+                      {{ $post->title }}</h3>
+                    <p class="text-gray-500 text-sm leading-relaxed mb-6 line-clamp-3">{{ strip_tags($post->content) }}
+                    </p>
                     <a href="{{ route('post.show', $post->slug) }}"
-                      class="read-more-link text-sm font-bold text-primary hover:text-secondary transition-colors flex items-center gap-2">
+                      class="read-more-link text-sm font-bold text-primary hover:text-secondary flex items-center gap-2">
                       {{ __('Read More') }} <i class="fa-solid fa-chevron-right text-xs"></i>
                     </a>
                   </div>
@@ -179,74 +160,38 @@
               @endforeach
             </div>
 
-            {{-- pagination  --}}
-            <div class="flex justify-center mt-16 pb-12" data-aos="fade-up">
-              <nav class="flex items-center gap-2 p-2 bg-white/50 backdrop-blur-sm rounded-full">
-
-                @if ($posts->onFirstPage())
-                  <span
-                    class="w-10 h-10 flex items-center justify-center rounded-full text-gray-300 cursor-not-allowed transition-colors">
-                    <i class="fa-solid fa-chevron-left text-sm"></i>
-                  </span>
-                @else
-                  <a href="{{ $posts->previousPageUrl() }}"
-                    class="w-10 h-10 flex items-center justify-center rounded-full bg-white text-gray-600 hover:bg-primary hover:text-white shadow-sm hover:shadow-md border border-gray-100 hover:border-primary transition-all duration-300 group">
-                    <i class="fa-solid fa-chevron-left text-sm group-hover:-translate-x-0.5 transition-transform"></i>
-                  </a>
-                @endif
-
-                <div class="hidden md:flex items-center gap-1.5 px-2">
-                  @foreach ($posts->getUrlRange(max(1, $posts->currentPage() - 2), min($posts->lastPage(), $posts->currentPage() + 2)) as $page => $url)
-                    @if ($page == $posts->currentPage())
-                      <span
-                        class="w-10 h-10 flex items-center justify-center rounded-full bg-primary text-white font-bold shadow-lg shadow-primary/30 scale-110 transition-transform">
-                        {{ $page }}
-                      </span>
-                    @else
-                      <a href="{{ $url }}"
-                        class="w-10 h-10 flex items-center justify-center rounded-full bg-white text-gray-500 hover:text-primary hover:bg-gray-50 border border-transparent hover:border-gray-200 transition-all duration-300 font-medium">
-                        {{ $page }}
-                      </a>
-                    @endif
-                  @endforeach
-                </div>
-
-                <div class="md:hidden flex items-center px-4 font-medium text-gray-500 text-sm font-sans">
-                  <span class="text-primary font-bold">{{ $posts->currentPage() }}</span>
-                  <span class="mx-1">/</span>
-                  <span>{{ $posts->lastPage() }}</span>
-                </div>
-
-                @if ($posts->hasMorePages())
-                  <a href="{{ $posts->nextPageUrl() }}"
-                    class="w-10 h-10 flex items-center justify-center rounded-full bg-white text-gray-600 hover:bg-primary hover:text-white shadow-sm hover:shadow-md border border-gray-100 hover:border-primary transition-all duration-300 group">
-                    <i class="fa-solid fa-chevron-right text-sm group-hover:translate-x-0.5 transition-transform"></i>
-                  </a>
-                @else
-                  <span
-                    class="w-10 h-10 flex items-center justify-center rounded-full text-gray-300 cursor-not-allowed transition-colors">
-                    <i class="fa-solid fa-chevron-right text-sm"></i>
-                  </span>
-                @endif
-
-              </nav>
-            </div>
+            @if ($posts->hasPages())
+              <div class="flex justify-center mt-16 pb-12">
+                {{ $posts->links() }}
+              </div>
+            @endif
           @else
             <div class="flex flex-col items-center justify-center py-24 text-center" data-aos="fade-up">
               <div class="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mb-8">
-                <i class="fa-regular fa-newspaper text-4xl text-gray-300"></i>
+                <i
+                  class="fa-regular fa-{{ request('search') || request('category') ? 'magnifying-glass' : 'newspaper' }} text-4xl text-gray-300"></i>
               </div>
-              <h3 class="font-header text-3xl text-primary mb-2">{{ __('No Results Found') }}</h3>
-              <p class="text-gray-500 max-w-md mx-auto mb-8 font-sans">
-                {{ __('No articles found matching your criteria.') }}
-              </p>
+
+              @if (request('search') || request('category'))
+                <h3 class="font-header text-3xl text-primary mb-2">{{ __('No Results Found') }}</h3>
+                <p class="text-gray-500 max-w-md mx-auto mb-8 font-sans">
+                  {{ __('We couldn\'t find any articles matching "') }}<span
+                    class="font-bold text-primary">{{ request('search') ?? request('category') }}</span>".
+                </p>
+                <button @click="activeCategory = ''; search = ''; applyFilter()"
+                  class="text-secondary font-bold underline cursor-pointer">
+                  {{ __('Clear all filters') }}
+                </button>
+              @else
+                <h3 class="font-header text-3xl text-primary mb-2">{{ __('No Articles Yet') }}</h3>
+                <p class="text-gray-500 max-w-md mx-auto mb-8 font-sans">
+                  {{ __('We are currently working on fresh content. Stay tuned!') }}
+                </p>
+              @endif
             </div>
           @endif
-
         @endfragment
-
       </div>
-
     </div>
   </main>
 </x-layouts>
