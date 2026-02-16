@@ -125,9 +125,29 @@
         </h2>
       </div>
 
+      @php
+        $allSlides = collect();
+
+        foreach ($works as $work) {
+            $pictures = $work->picture;
+
+            if (!is_array($pictures)) {
+                $pictures = empty($pictures) ? [] : [$pictures];
+            }
+
+            foreach ($pictures as $pic) {
+                $allSlides->push([
+                    'image' => $pic,
+                    'name' => $work->name,
+                    'id' => $work->id,
+                ]);
+            }
+        }
+      @endphp
+
       <div x-data="{
           currentIndex: 0,
-          totalSlides: {{ $works->count() }},
+          totalSlides: {{ $allSlides->count() }},
           perView: window.innerWidth >= 1024 ? 3 : 1,
           autoplayInterval: null,
           touchStartX: 0,
@@ -174,7 +194,6 @@
           handleTouchEnd(e) {
               this.touchEndX = e.changedTouches[0].screenX;
               this.startAutoplay();
-      
               if (this.touchStartX - this.touchEndX > 50) {
                   this.next();
               }
@@ -187,49 +206,25 @@
         @touchstart="handleTouchStart($event)" @touchend="handleTouchEnd($event)" class="relative group/slider"
         data-aos="fade-up">
 
-        @if ($works->count() > 0)
+        @if ($allSlides->count() > 0)
           <div class="overflow-hidden">
             <div class="flex transition-transform duration-700 ease-in-out -mx-3"
               :style="`transform: translateX(-${currentIndex * (100 / perView)}%)`">
 
-              @foreach ($works as $index => $work)
-                @php
-                  $rawPicture = $work->picture;
-                  $coverImage = null;
-
-                  if (is_array($rawPicture) && count($rawPicture) > 0) {
-                      $coverImage = $rawPicture[0];
-                  } elseif (is_string($rawPicture) && !empty($rawPicture)) {
-                      $decoded = json_decode($rawPicture, true);
-                      if (json_last_error() === JSON_ERROR_NONE && is_array($decoded) && count($decoded) > 0) {
-                          $coverImage = $decoded[0];
-                      } else {
-                          $coverImage = $rawPicture;
-                      }
-                  }
-                @endphp
-
+              @foreach ($allSlides as $slide)
                 <div class="flex-shrink-0 px-3 transition-all duration-300" :style="`width: ${100 / perView}%`">
                   <div class="group relative overflow-hidden rounded-lg cursor-pointer h-full">
                     <div
                       class="aspect-[3/4] w-full flex items-center justify-center overflow-hidden relative bg-gray-200">
 
-                      @if ($coverImage)
-                        <img src="{{ asset('storage/' . $coverImage) }}" alt="{{ $work->name }}"
-                          class="w-full h-full object-cover transform transition-transform duration-700 ease-in-out group-hover:scale-110 pointer-events-none select-none">
-                      @else
-                        <div
-                          class="text-center group-hover:scale-110 transition-transform duration-500 flex flex-col items-center justify-center h-full w-full bg-gray-100">
-                          <i class="fa-regular fa-image text-5xl text-gray-400 mb-2"></i>
-                          <span class="text-xs text-gray-400">No Image</span>
-                        </div>
-                      @endif
+                      <img src="{{ asset('storage/' . $slide['image']) }}" alt="{{ $slide['name'] }}"
+                        class="w-full h-full object-cover transform transition-transform duration-700 ease-in-out group-hover:scale-110 pointer-events-none select-none">
 
                       <div
                         class="absolute inset-0 pointer-events-none bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
                         <div
                           class="transform translate-y-0 md:translate-y-4 md:group-hover:translate-y-0 transition-transform duration-300 w-full">
-                          <p class="font-header text-2xl text-white italic drop-shadow-md">{{ $work->name }}</p>
+                          <p class="font-header text-2xl text-white italic drop-shadow-md">{{ $slide['name'] }}</p>
                           <div class="h-0.5 w-12 bg-secondary mt-2 shadow-sm"></div>
                         </div>
                       </div>
