@@ -130,6 +130,8 @@
           totalSlides: {{ $works->count() }},
           perView: window.innerWidth >= 1024 ? 3 : 1,
           autoplayInterval: null,
+          touchStartX: 0,
+          touchEndX: 0,
       
           updateView() {
               this.perView = window.innerWidth >= 1024 ? 3 : 1;
@@ -162,30 +164,59 @@
       
           stopAutoplay() {
               clearInterval(this.autoplayInterval);
+          },
+      
+          handleTouchStart(e) {
+              this.touchStartX = e.changedTouches[0].screenX;
+              this.stopAutoplay();
+          },
+      
+          handleTouchEnd(e) {
+              this.touchEndX = e.changedTouches[0].screenX;
+              this.startAutoplay();
+      
+              if (this.touchStartX - this.touchEndX > 50) {
+                  this.next();
+              }
+              if (this.touchEndX - this.touchStartX > 50) {
+                  this.prev();
+              }
           }
       }" x-init="window.addEventListener('resize', () => updateView());
       startAutoplay()" @mouseenter="stopAutoplay()" @mouseleave="startAutoplay()"
-        class="relative group/slider" data-aos="fade-up">
+        @touchstart="handleTouchStart($event)" @touchend="handleTouchEnd($event)" class="relative group/slider"
+        data-aos="fade-up">
 
         @if ($works->count() > 0)
           <div class="overflow-hidden">
-
             <div class="flex transition-transform duration-700 ease-in-out -mx-3"
               :style="`transform: translateX(-${currentIndex * (100 / perView)}%)`">
+
               @foreach ($works as $index => $work)
                 @php
-                  $coverImage = count($work->picture) > 0 ? $work->picture[0] : null;
+                  $rawPicture = $work->picture;
+                  $coverImage = null;
+
+                  if (is_array($rawPicture) && count($rawPicture) > 0) {
+                      $coverImage = $rawPicture[0];
+                  } elseif (is_string($rawPicture) && !empty($rawPicture)) {
+                      $decoded = json_decode($rawPicture, true);
+                      if (json_last_error() === JSON_ERROR_NONE && is_array($decoded) && count($decoded) > 0) {
+                          $coverImage = $decoded[0];
+                      } else {
+                          $coverImage = $rawPicture;
+                      }
+                  }
                 @endphp
 
                 <div class="flex-shrink-0 px-3 transition-all duration-300" :style="`width: ${100 / perView}%`">
                   <div class="group relative overflow-hidden rounded-lg cursor-pointer h-full">
-
                     <div
                       class="aspect-[3/4] w-full flex items-center justify-center overflow-hidden relative bg-gray-200">
 
                       @if ($coverImage)
                         <img src="{{ asset('storage/' . $coverImage) }}" alt="{{ $work->name }}"
-                          class="w-full h-full object-cover transform transition-transform duration-700 ease-in-out group-hover:scale-110">
+                          class="w-full h-full object-cover transform transition-transform duration-700 ease-in-out group-hover:scale-110 pointer-events-none select-none">
                       @else
                         <div
                           class="text-center group-hover:scale-110 transition-transform duration-500 flex flex-col items-center justify-center h-full w-full bg-gray-100">
@@ -212,12 +243,12 @@
           </div>
 
           <button @click="prev()"
-            class="absolute top-1/2 -left-4 md:-left-12 transform -translate-y-1/2 z-10 w-10 h-10 md:w-12 md:h-12 bg-white rounded-full shadow-lg flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-all duration-300 opacity-0 group-hover/slider:opacity-100 focus:outline-none">
+            class="absolute top-1/2 -left-4 md:-left-12 transform -translate-y-1/2 z-10 w-10 h-10 md:w-12 md:h-12 bg-white rounded-full shadow-lg flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-all duration-300 opacity-0 group-hover/slider:opacity-100 focus:outline-none hidden md:flex">
             <i class="fa-solid fa-chevron-left"></i>
           </button>
 
           <button @click="next()"
-            class="absolute top-1/2 -right-4 md:-right-12 transform -translate-y-1/2 z-10 w-10 h-10 md:w-12 md:h-12 bg-white rounded-full shadow-lg flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-all duration-300 opacity-0 group-hover/slider:opacity-100 focus:outline-none">
+            class="absolute top-1/2 -right-4 md:-right-12 transform -translate-y-1/2 z-10 w-10 h-10 md:w-12 md:h-12 bg-white rounded-full shadow-lg flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-all duration-300 opacity-0 group-hover/slider:opacity-100 focus:outline-none hidden md:flex">
             <i class="fa-solid fa-chevron-right"></i>
           </button>
         @else
