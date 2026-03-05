@@ -23,25 +23,26 @@
 
   <div x-show="isLoading" class="fixed inset-0 bg-black/50 z-[60] flex items-center justify-center backdrop-blur-sm"
     style="display: none;">
-    <div class="text-white font-bold animate-pulse">Switching Language...</div>
+    <div class="text-white text-sm sm:text-base font-bold animate-pulse">Switching Language...</div>
   </div>
 
   <div class="transition-all duration-500 ease-in-out bg-primary border-b border-white/10 w-full"
     :class="{ 'bg-primary/95 backdrop-blur-md shadow-lg': scrolled }">
 
-    <div class="max-w-7xl mx-auto flex justify-between items-center h-20 px-6 md:px-8">
+    <div class="max-w-7xl mx-auto flex justify-between items-center h-16 sm:h-20 px-4 sm:px-6 md:px-8">
 
       <div class="flex-shrink-0 flex items-center gap-2">
         <a href="{{ route('home') }}"
           class="group flex items-center gap-2 transition-transform duration-300 hover:scale-105">
-          <img src="{{ asset('logo.png') }}" alt="SBK Logo" class="h-10 w-auto object-contain brightness-0 invert">
+          <img src="{{ asset('logo.png') }}" alt="SBK Logo"
+            class="h-8 sm:h-10 w-auto object-contain brightness-0 invert">
         </a>
       </div>
 
-      <div class="hidden md:flex items-center space-x-8">
+      <div class="hidden md:flex items-center space-x-6 lg:space-x-8">
 
         <a href="{{ route('home') }}"
-          class="text-white/90 hover:text-secondary text-md font-bold uppercase transition-colors relative group">
+          class="text-white/90 hover:text-secondary text-sm lg:text-md font-bold uppercase transition-colors relative group">
           {{ __('Home') }}
           <span
             class="absolute -bottom-1 left-0 w-0 h-[2px] bg-secondary transition-all duration-300 group-hover:w-full"></span>
@@ -51,7 +52,7 @@
           @mouseleave="profileOpen = false">
 
           <button
-            class="text-white/90 group-hover:text-secondary text-md font-bold uppercase inline-flex items-center gap-1 focus:outline-none transition-colors">
+            class="text-white/90 group-hover:text-secondary text-sm lg:text-md font-bold uppercase inline-flex items-center gap-1 focus:outline-none transition-colors">
             {{ __('Profile') }}
             <i class="fa-solid fa-chevron-down text-[10px] transition-transform duration-300 opacity-70"
               :class="{ 'rotate-180': profileOpen }"></i>
@@ -64,42 +65,43 @@
             class="absolute left-0 top-20 w-48 bg-primary border border-white/10 shadow-2xl py-2 z-50 overflow-hidden"
             style="display: none;">
             <a href="{{ route('about-us') }}"
-              class="block px-6 py-3 text-md text-white hover:bg-white/5 hover:text-secondary border-b border-white/5">{{ __('About Us') }}</a>
+              class="block px-6 py-2.5 text-sm lg:text-md text-white hover:bg-white/5 hover:text-secondary border-b border-white/5">{{ __('About Us') }}</a>
             <a href="{{ route('our-team') }}"
-              class="block px-6 py-3 text-md text-white hover:bg-white/5 hover:text-secondary border-b border-white/5">{{ __('Our Team') }}</a>
+              class="block px-6 py-2.5 text-sm lg:text-md text-white hover:bg-white/5 hover:text-secondary border-b border-white/5">{{ __('Our Team') }}</a>
             <a href="{{ route('gallery') }}"
-              class="block px-6 py-3 text-md text-white hover:bg-white/5 hover:text-secondary">{{ __('Gallery') }}</a>
+              class="block px-6 py-2.5 text-sm lg:text-md text-white hover:bg-white/5 hover:text-secondary">{{ __('Gallery') }}</a>
           </div>
         </div>
 
         <a href="{{ route('insight') }}"
-          class="text-white/90 hover:text-secondary text-md font-bold uppercase transition-colors relative group">
+          class="text-white/90 hover:text-secondary text-sm lg:text-md font-bold uppercase transition-colors relative group">
           {{ __('Insight') }}
           <span
             class="absolute -bottom-1 left-0 w-0 h-[2px] bg-secondary transition-all duration-300 group-hover:w-full"></span>
         </a>
 
         <a href="{{ route('shop') }}"
-          class="text-white/90 hover:text-secondary text-md font-bold uppercase transition-colors relative group">
+          class="text-white/90 hover:text-secondary text-sm lg:text-md font-bold uppercase transition-colors relative group">
           {{ __('Shop') }}
           <span
             class="absolute -bottom-1 left-0 w-0 h-[2px] bg-secondary transition-all duration-300 group-hover:w-full"></span>
         </a>
 
         <a href="{{ route('contact') }}"
-          class="text-white/90 hover:text-secondary text-md font-bold uppercase transition-colors relative group">
+          class="text-white/90 hover:text-secondary text-sm lg:text-md font-bold uppercase transition-colors relative group">
           {{ __('Contact') }}
           <span
             class="absolute -bottom-1 left-0 w-0 h-[2px] bg-secondary transition-all duration-300 group-hover:w-full"></span>
         </a>
 
-        <div class="ml-6 flex items-center bg-black/20 backdrop-blur-xl rounded-full p-1 border border-white/20">
+        <div
+          class="ml-4 lg:ml-6 flex items-center bg-black/20 backdrop-blur-xl rounded-full p-1 border border-white/20">
           <button @click="switchLanguage('id')"
-            class="px-6 py-2 rounded-full text-md font-bold transition-all duration-300 {{ app()->getLocale() == 'id' ? 'bg-white text-primary shadow-lg' : 'text-white/70 hover:text-white' }}">
+            class="px-4 py-1.5 lg:px-6 lg:py-2 rounded-full text-xs lg:text-md font-bold transition-all duration-300 {{ app()->getLocale() == 'id' ? 'bg-white text-primary shadow-lg' : 'text-white/70 hover:text-white' }}">
             ID
           </button>
           <button @click="switchLanguage('en')"
-            class="px-6 py-2 rounded-full text-md font-bold transition-all duration-300 {{ app()->getLocale() == 'en' ? 'bg-white text-primary shadow-lg' : 'text-white/70 hover:text-white' }}">
+            class="px-4 py-1.5 lg:px-6 lg:py-2 rounded-full text-xs lg:text-md font-bold transition-all duration-300 {{ app()->getLocale() == 'en' ? 'bg-white text-primary shadow-lg' : 'text-white/70 hover:text-white' }}">
             EN
           </button>
         </div>
@@ -107,7 +109,8 @@
       </div>
 
       <div class="md:hidden flex items-center">
-        <button @click="mobileOpen = !mobileOpen" class="text-white hover:text-secondary p-2 text-xl outline-none">
+        <button @click="mobileOpen = !mobileOpen"
+          class="text-white hover:text-secondary p-2 text-lg sm:text-xl outline-none">
           <i x-show="!mobileOpen" class="fa-solid fa-bars"></i>
           <i x-show="mobileOpen" class="fa-solid fa-xmark" style="display: none;"></i>
         </button>
@@ -122,50 +125,52 @@
     x-transition:leave-end="opacity-0 -translate-y-4"
     class="md:hidden bg-primary border-b border-white/10 w-full left-0 shadow-xl" style="display: none;">
 
-    <div class="px-4 py-6 space-y-2 max-h-[80vh] overflow-y-auto">
+    <div class="px-4 py-4 sm:py-6 space-y-1 sm:space-y-2 max-h-[80vh] overflow-y-auto">
       <a href="{{ route('home') }}"
-        class="block px-4 py-3 text-md font-bold text-white hover:bg-white/5 uppercase border-b border-white/5">
+        class="block px-4 py-2.5 sm:py-3 text-sm sm:text-md font-bold text-white hover:bg-white/5 uppercase border-b border-white/5">
         {{ __('Home') }}
       </a>
 
       <div x-data="{ subOpen: false }">
         <button @click="subOpen = !subOpen"
-          class="w-full flex justify-between items-center px-4 py-3 text-md font-bold text-white hover:bg-white/5 uppercase outline-none">
+          class="w-full flex justify-between items-center px-4 py-2.5 sm:py-3 text-sm sm:text-md font-bold text-white hover:bg-white/5 uppercase outline-none">
           <span>{{ __('Profile') }}</span>
-          <i class="fa-solid fa-chevron-down transition-transform duration-300" :class="{ 'rotate-180': subOpen }"></i>
+          <i class="fa-solid fa-chevron-down text-xs transition-transform duration-300"
+            :class="{ 'rotate-180': subOpen }"></i>
         </button>
 
         <div x-show="subOpen" x-collapse class="bg-black/10 rounded-lg mx-2 my-1 overflow-hidden"
           style="display: none;">
           <a href="{{ route('about-us') }}"
-            class="block px-8 py-3 text-white hover:text-secondary text-sm border-b border-white/5">{{ __('About Us') }}</a>
+            class="block px-8 py-2.5 sm:py-3 text-white hover:text-secondary text-xs sm:text-sm border-b border-white/5">{{ __('About Us') }}</a>
           <a href="{{ route('our-team') }}"
-            class="block px-8 py-3 text-white hover:text-secondary text-sm border-b border-white/5">{{ __('Our Team') }}</a>
+            class="block px-8 py-2.5 sm:py-3 text-white hover:text-secondary text-xs sm:text-sm border-b border-white/5">{{ __('Our Team') }}</a>
           <a href="{{ route('gallery') }}"
-            class="block px-8 py-3 text-white hover:text-secondary text-sm">{{ __('Gallery') }}</a>
+            class="block px-8 py-2.5 sm:py-3 text-white hover:text-secondary text-xs sm:text-sm">{{ __('Gallery') }}</a>
         </div>
       </div>
 
       <a href="{{ route('insight') }}"
-        class="block px-4 py-3 text-md font-bold text-white hover:bg-white/5 uppercase border-b border-white/5">
+        class="block px-4 py-2.5 sm:py-3 text-sm sm:text-md font-bold text-white hover:bg-white/5 uppercase border-b border-white/5">
         {{ __('Insight') }}
       </a>
       <a href="{{ route('shop') }}"
-        class="block px-4 py-3 text-md font-bold text-white hover:bg-white/5 uppercase border-b border-white/5">
+        class="block px-4 py-2.5 sm:py-3 text-sm sm:text-md font-bold text-white hover:bg-white/5 uppercase border-b border-white/5">
         {{ __('Shop') }}
       </a>
-      <a href="{{ route('contact') }}" class="block px-4 py-3 text-md font-bold text-white hover:bg-white/5 uppercase">
+      <a href="{{ route('contact') }}"
+        class="block px-4 py-2.5 sm:py-3 text-sm sm:text-md font-bold text-white hover:bg-white/5 uppercase">
         {{ __('Contact') }}
       </a>
 
-      <div class="pt-6 pb-2 flex justify-center border-t border-white/5 mt-4">
+      <div class="pt-5 pb-2 flex justify-center border-t border-white/5 mt-3">
         <div class="inline-flex bg-black/20 rounded-full p-1 border border-white/10">
           <button @click="switchLanguage('id')"
-            class="px-8 py-2.5 rounded-full text-sm font-bold transition-all duration-300 {{ app()->getLocale() == 'id' ? 'bg-white text-primary shadow-md' : 'text-white/70' }}">
+            class="px-6 py-2 sm:px-8 sm:py-2.5 rounded-full text-xs sm:text-sm font-bold transition-all duration-300 {{ app()->getLocale() == 'id' ? 'bg-white text-primary shadow-md' : 'text-white/70' }}">
             ID
           </button>
           <button @click="switchLanguage('en')"
-            class="px-8 py-2.5 rounded-full text-sm font-bold transition-all duration-300 {{ app()->getLocale() == 'en' ? 'bg-white text-primary shadow-md' : 'text-white/70' }}">
+            class="px-6 py-2 sm:px-8 sm:py-2.5 rounded-full text-xs sm:text-sm font-bold transition-all duration-300 {{ app()->getLocale() == 'en' ? 'bg-white text-primary shadow-md' : 'text-white/70' }}">
             EN
           </button>
         </div>
