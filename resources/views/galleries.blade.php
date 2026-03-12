@@ -87,7 +87,8 @@
       </div>
 
       <div class="mb-8 sm:mb-12 min-h-[50px] sm:min-h-[60px]" x-show="activeTab !== 'all'"
-        x-transition.opacity.duration.500ms style="display: none;">
+        x-transition:enter="transition ease-out duration-500" x-transition:enter-start="opacity-0"
+        x-transition:enter-end="opacity-100" style="display: none;">
         @foreach ($galleries as $descItem)
           <div x-show="activeTab === '{{ $descItem->id }}'" style="display: none;"
             class="max-w-3xl mx-auto text-center space-y-3 sm:space-y-4">
@@ -112,7 +113,7 @@
           </span>
         </div>
 
-        <div x-show="!isLoading" style="display: none;" class="relative">
+        <div x-show="!isLoading" style="display: none;">
           @if ($galleries->isEmpty())
             <div
               class="flex flex-col items-center justify-center py-16 sm:py-24 text-center border-2 border-dashed border-primary/10 rounded-2xl sm:rounded-3xl">
@@ -129,10 +130,12 @@
               @foreach ($galleries as $item)
                 @php
                   $images = is_string($item->images) ? json_decode($item->images, true) : $item->images;
-                  $images = is_array($images) ? $images : [];
+                  $images = is_array($images) ? array_filter($images) : [];
+                  $itemTitle = e($item->title);
                 @endphp
 
                 @foreach ($images as $image)
+                  @php $imagePath = asset('storage/' . $image); @endphp
                   <div x-show="activeTab === 'all' || activeTab === '{{ $item->id }}'"
                     x-transition:enter="transition ease-out duration-700"
                     x-transition:enter-start="opacity-0 translate-y-8"
@@ -141,10 +144,9 @@
 
                     <div
                       class="bg-white p-1.5 sm:p-2 md:p-2.5 rounded-xl shadow-sm hover:shadow-xl transition-all duration-500 border border-primary/5 cursor-zoom-in"
-                      @click="openLightbox('{{ asset('storage/' . addslashes($image)) }}', '{{ addslashes($item->title) }}')">
-
+                      @click="openLightbox('{{ $imagePath }}', '{{ $itemTitle }}')">
                       <div class="relative overflow-hidden rounded-lg bg-gray-100">
-                        <img src="{{ asset('storage/' . $image) }}" loading="lazy" alt="{{ $item->title }}"
+                        <img src="{{ $imagePath }}" loading="lazy" alt="{{ $item->title }}"
                           class="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-105">
                       </div>
                     </div>
@@ -157,7 +159,6 @@
       </div>
     </section>
 
-    {{-- Lightbox Modal --}}
     <div x-show="lightboxOpen" style="display: none;" x-transition:enter="transition ease-out duration-300"
       x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
       x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100"
@@ -171,10 +172,8 @@
       </button>
 
       <div class="relative max-w-5xl w-full flex flex-col items-center" @click.stop>
-        <img :src="lightboxImage"
-          class="max-w-full max-h-[70vh] sm:max-h-[80vh] object-contain rounded-md shadow-2xl transition-all"
-          alt="Zoomed Image">
-
+        <img :src="lightboxImage" :alt="lightboxTitle"
+          class="max-w-full max-h-[70vh] sm:max-h-[80vh] object-contain rounded-md shadow-2xl transition-all">
         <p x-text="lightboxTitle"
           class="mt-4 sm:mt-6 text-white/90 font-header text-sm sm:text-base md:text-lg tracking-widest uppercase text-center">
         </p>

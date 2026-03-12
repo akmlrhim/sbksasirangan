@@ -5,6 +5,15 @@
         search: '{{ request('search') }}',
         isLoading: false,
     
+        init() {
+            window.addEventListener('popstate', () => {
+                const params = new URLSearchParams(window.location.search);
+                this.activeCategory = params.get('category') ?? '';
+                this.search = params.get('search') ?? '';
+                this.fetchData(window.location.href);
+            });
+        },
+    
         async fetchData(url) {
             if (!url) return;
             this.isLoading = true;
@@ -25,15 +34,12 @@
         },
     
         applyFilter() {
-            let params = new URLSearchParams();
+            const params = new URLSearchParams();
             if (this.activeCategory) params.append('category', this.activeCategory);
             if (this.search) params.append('search', this.search);
     
             const queryString = params.toString();
-            const url = queryString ?
-                `{{ route('shop') }}?${queryString}` :
-                `{{ route('shop') }}`;
-    
+            const url = queryString ? `{{ route('shop') }}?${queryString}` : `{{ route('shop') }}`;
             this.fetchData(url);
         },
     
@@ -41,7 +47,6 @@
             const link = e.target.closest('a');
             if (!link) return;
             if (link.closest('.product-card')) return;
-    
             e.preventDefault();
             this.fetchData(link.href);
         }
@@ -65,13 +70,13 @@
         </p>
       </div>
 
-      @if ($products && count($products) > 0)
+      @if ($products->isNotEmpty())
         <div
           class="mb-8 sm:mb-10 flex flex-col lg:flex-row justify-between items-center gap-4 sm:gap-6 bg-white p-4 sm:p-5 rounded-xl sm:rounded-2xl shadow-sm border border-[#e6e2d8]"
           data-aos="fade-up">
 
-          <div class="flex gap-2 overflow-x-auto w-full lg:w-auto pb-2 lg:pb-0 hide-scrollbar flex-1">
-            <button @click="activeCategory = null; search = ''; applyFilter()"
+          <div class="flex flex-wrap justify-center lg:justify-start gap-2 w-full lg:w-auto flex-1">
+            <button @click="activeCategory = ''; search = ''; applyFilter()"
               :class="!activeCategory ? 'bg-primary text-white shadow-md' :
                   'bg-[#fdfbf7] text-gray-600 border border-gray-200 hover:text-primary'"
               class="px-4 py-2 sm:px-6 sm:py-2.5 rounded-full text-xs sm:text-sm font-medium whitespace-nowrap transition cursor-pointer">
@@ -92,7 +97,7 @@
             <input type="text" x-model="search" placeholder="{{ __('Search products...') }}"
               class="w-full pl-5 sm:pl-6 py-2.5 sm:py-3 rounded-full bg-[#fdfbf7] border border-gray-200 focus:border-secondary focus:ring-1 focus:ring-secondary outline-none text-xs sm:text-sm text-primary transition shadow-inner">
             <button type="submit"
-              class="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-secondary text-sm sm:text-base">
+              class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-secondary text-sm sm:text-base">
               <i class="fa-solid fa-magnifying-glass"></i>
             </button>
           </form>
@@ -103,9 +108,8 @@
         :class="{ 'opacity-50 pointer-events-none': isLoading }" class="transition-opacity duration-300 min-h-[400px]">
 
         @fragment('products-list')
-
-          <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 md:gap-8">
-            @forelse($products as $product)
+          <div class="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 md:gap-8">
+            @forelse ($products as $product)
               <div
                 class="product-card group relative overflow-hidden rounded-xl sm:rounded-2xl shadow-lg border border-[#e6e2d8] h-full"
                 data-aos="fade-up">
@@ -119,7 +123,7 @@
 
                     @if ($product->picture)
                       <img src="{{ asset('storage/' . $product->picture) }}" alt="{{ $product->name }}"
-                        class="w-full h-full object-cover transform transition-transform duration-700 ease-in-out group-hover:scale-110">
+                        class="w-full h-full object-cover transition-transform duration-700 ease-in-out group-hover:scale-110">
                     @else
                       <div
                         class="w-full h-full flex items-center justify-center bg-gray-100 text-center group-hover:scale-110 transition-transform duration-500">
@@ -130,7 +134,7 @@
                     <div
                       class="absolute inset-0 bg-gradient-to-t from-primary/95 via-primary/20 to-transparent opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4 sm:p-6">
                       <div
-                        class="transform translate-y-0 md:translate-y-4 md:group-hover:translate-y-0 transition-transform duration-300 w-full">
+                        class="translate-y-0 md:translate-y-4 md:group-hover:translate-y-0 transition-transform duration-300 w-full">
                         <h3 class="font-header text-lg sm:text-2xl text-white italic leading-tight mb-1">
                           {{ $product->name }}
                         </h3>
@@ -140,6 +144,7 @@
                   </div>
                 </a>
               </div>
+
             @empty
               <div class="col-span-full py-16 sm:py-20 text-center" data-aos="fade-up">
                 <div
@@ -148,14 +153,14 @@
                 </div>
                 <h3 class="text-2xl sm:text-3xl font-header text-primary">{{ __('No Products Found') }}</h3>
                 <p class="text-xs sm:text-sm md:text-base text-gray-500 mt-2 px-4">
-                  @if (filled($search) || filled($categories))
+                  @if (request('search') || request('category'))
                     {{ __("We couldn't find any products matching your criteria.") }}
                   @else
                     {{ __('No products found at the moment. Please check back later.') }}
                   @endif
                 </p>
                 @if (request('search') || request('category'))
-                  <button @click="activeCategory = null; search = ''; applyFilter()"
+                  <button @click="activeCategory = ''; search = ''; applyFilter()"
                     class="mt-4 sm:mt-6 inline-block text-xs sm:text-sm text-secondary font-bold hover:underline cursor-pointer">
                     {{ __('Clear all filters') }}
                   </button>
@@ -170,7 +175,7 @@
 
                 @if ($products->onFirstPage())
                   <span
-                    class="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-full text-gray-300 cursor-not-allowed transition-colors">
+                    class="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-full text-gray-300 cursor-not-allowed">
                     <i class="fa-solid fa-chevron-left text-xs sm:text-sm"></i>
                   </span>
                 @else
@@ -185,7 +190,7 @@
                   @foreach ($products->getUrlRange(max(1, $products->currentPage() - 2), min($products->lastPage(), $products->currentPage() + 2)) as $page => $url)
                     @if ($page == $products->currentPage())
                       <span
-                        class="w-10 h-10 flex items-center justify-center rounded-full bg-primary text-white font-bold shadow-lg shadow-primary/30 scale-110 transition-transform">
+                        class="w-10 h-10 flex items-center justify-center rounded-full bg-primary text-white font-bold shadow-lg shadow-primary/30 scale-110">
                         {{ $page }}
                       </span>
                     @else
@@ -211,18 +216,17 @@
                   </a>
                 @else
                   <span
-                    class="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-full text-gray-300 cursor-not-allowed transition-colors">
+                    class="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-full text-gray-300 cursor-not-allowed">
                     <i class="fa-solid fa-chevron-right text-xs sm:text-sm"></i>
                   </span>
                 @endif
+
               </nav>
             </div>
           @endif
-
         @endfragment
 
       </div>
-
     </div>
   </main>
 </x-layouts>

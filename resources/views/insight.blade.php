@@ -5,6 +5,15 @@
         search: '{{ request('search') }}',
         isLoading: false,
     
+        init() {
+            window.addEventListener('popstate', () => {
+                const params = new URLSearchParams(window.location.search);
+                this.activeCategory = params.get('category') ?? '';
+                this.search = params.get('search') ?? '';
+                this.fetchData(window.location.href);
+            });
+        },
+    
         async fetchData(url) {
             if (!url) return;
             this.isLoading = true;
@@ -25,20 +34,27 @@
         },
     
         applyFilter() {
-            let params = new URLSearchParams();
+            const params = new URLSearchParams();
             if (this.activeCategory) params.append('category', this.activeCategory);
             if (this.search) params.append('search', this.search);
     
-            let queryString = params.toString();
+            const queryString = params.toString();
             const url = queryString ? `{{ route('insight') }}?${queryString}` : `{{ route('insight') }}`;
             this.fetchData(url);
+        },
+    
+        handleFragmentClick(event) {
+            const link = event.target.closest('a');
+            if (!link) return;
+            if (link.classList.contains('read-more-link') || link.closest('.read-more-link')) return;
+            event.preventDefault();
+            this.fetchData(link.href);
         }
     }">
 
     <div class="absolute inset-0 pointer-events-none">
       <img src="{{ asset('img/element.png') }}"
-        class="absolute top-0 right-0 w-64 sm:w-80 opacity-5 -rotate-12 transform translate-x-1/4 -translate-y-1/4"
-        alt="Decor">
+        class="absolute top-0 right-0 w-64 sm:w-80 opacity-5 -rotate-12 translate-x-1/4 -translate-y-1/4" alt="Decor">
     </div>
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10" id="scroll-target">
@@ -58,7 +74,7 @@
             <input type="text" x-model="search" placeholder="{{ __('Search articles...') }}"
               class="w-full pl-5 sm:pl-6 pr-12 sm:pr-16 py-3 sm:py-4 rounded-full bg-white border border-[#e6e2d8] focus:border-secondary focus:ring-0 text-sm sm:text-base text-primary placeholder-gray-400 shadow-inner transition-all duration-300">
             <button type="submit"
-              class="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-secondary text-sm sm:text-base">
+              class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-secondary text-sm sm:text-base">
               <i class="fa-solid fa-magnifying-glass"></i>
             </button>
           </form>
@@ -83,13 +99,16 @@
         </div>
       @endif
 
-      <div id="fragment-container"
-        @click="if($event.target.closest('a') && !$event.target.closest('.read-more-link')) { $event.preventDefault(); fetchData($event.target.closest('a').href); }"
+      <div id="fragment-container" @click="handleFragmentClick($event)"
         :class="{ 'opacity-50 pointer-events-none': isLoading }" class="transition-opacity duration-300 min-h-[400px]">
 
         @fragment('posts-area')
           @if ($posts->count() > 0)
-            @if ($posts->onFirstPage() && !request('search') && !request('category'))
+            @php
+              $isFrontPage = $posts->onFirstPage() && !request('search') && !request('category');
+            @endphp
+
+            @if ($isFrontPage)
               @php $featured = $posts->first(); @endphp
               <div class="mb-12 sm:mb-20" data-aos="fade-up">
                 <div
@@ -97,12 +116,17 @@
                   <div class="relative h-60 sm:h-72 lg:h-auto overflow-hidden">
                     <div class="absolute top-4 left-4 sm:top-6 sm:left-6 z-10">
                       <span
-                        class="bg-secondary text-white px-3 py-1 sm:px-4 sm:py-1.5 rounded-full text-[10px] sm:text-xs font-bold uppercase tracking-wider shadow-md">{{ __('Featured News') }}</span>
+                        class="bg-secondary text-white px-3 py-1 sm:px-4 sm:py-1.5 rounded-full text-[10px] sm:text-xs font-bold uppercase tracking-wider shadow-md">
+                        {{ __('Featured News') }}
+                      </span>
                     </div>
                     <div class="w-full h-full bg-gray-200 flex items-center justify-center overflow-hidden">
-                      {!! $featured->cover_image
-                          ? '<img src="' . asset('storage/' . $featured->cover_image) . '" class="w-full h-full object-cover">'
-                          : '<i class="fa-solid fa-image text-gray-400 text-3xl"></i>' !!}
+                      @if ($featured->cover_image)
+                        <img src="{{ asset('storage/' . $featured->cover_image) }}" class="w-full h-full object-cover"
+                          alt="{{ $featured->title }}">
+                      @else
+                        <i class="fa-solid fa-image text-gray-400 text-3xl"></i>
+                      @endif
                     </div>
                   </div>
                   <div class="p-6 sm:p-8 lg:p-12 flex flex-col justify-center">
@@ -115,7 +139,8 @@
                       {{ $featured->title }}
                     </h2>
                     <p class="text-gray-500 text-sm sm:text-base mb-6 sm:mb-8 leading-relaxed line-clamp-3">
-                      {{ strip_tags($featured->content) }}</p>
+                      {{ strip_tags($featured->content) }}
+                    </p>
                     <a href="{{ route('post.show', $featured->slug) }}"
                       class="read-more-link inline-flex items-center text-primary text-sm sm:text-base font-bold border-b-2 border-secondary pb-1 hover:text-secondary self-start group/link">
                       {{ __('Read Full Story') }} <i
@@ -127,21 +152,18 @@
             @endif
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 mb-16 sm:mb-20">
-              @php
-                $gridPosts =
-                    $posts->onFirstPage() && !request('search') && !request('category') ? $posts->skip(1) : $posts;
-              @endphp
-
-              @foreach ($gridPosts as $post)
+              @foreach ($isFrontPage ? $posts->slice(1) : $posts as $post)
                 <div
                   class="bg-white rounded-xl sm:rounded-2xl overflow-hidden shadow-lg border border-[#e6e2d8] transition-all duration-300 group"
                   data-aos="fade-up">
                   <div class="relative h-48 sm:h-60 overflow-hidden bg-gray-100 flex items-center justify-center">
-                    {!! $post->cover_image
-                        ? '<img src="' .
-                            asset('storage/' . $post->cover_image) .
-                            '" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">'
-                        : '<i class="fa-solid fa-image text-gray-400 text-3xl sm:text-4xl"></i>' !!}
+                    @if ($post->cover_image)
+                      <img src="{{ asset('storage/' . $post->cover_image) }}"
+                        class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                        alt="{{ $post->title }}">
+                    @else
+                      <i class="fa-solid fa-image text-gray-400 text-3xl sm:text-4xl"></i>
+                    @endif
                   </div>
                   <div class="p-5 sm:p-8">
                     <div class="flex items-center gap-2 text-[10px] sm:text-xs text-gray-400 mb-2 sm:mb-3 font-sans">
@@ -149,7 +171,8 @@
                     </div>
                     <h3
                       class="font-header text-xl sm:text-2xl text-primary mb-2 sm:mb-3 leading-tight group-hover:text-secondary transition-colors">
-                      {{ $post->title }}</h3>
+                      {{ $post->title }}
+                    </h3>
                     <p class="text-gray-500 text-xs sm:text-sm leading-relaxed mb-4 sm:mb-6 line-clamp-3">
                       {{ strip_tags($post->content) }}
                     </p>

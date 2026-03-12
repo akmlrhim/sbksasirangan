@@ -2,18 +2,16 @@
   <main class="w-full bg-third min-h-screen relative overflow-hidden pt-28 pb-16 sm:pt-36 sm:pb-20 md:pt-42 md:pb-32">
     <div class="absolute inset-0 pointer-events-none">
       <img src="{{ asset('img/element.png') }}"
-        class="absolute top-0 right-0 w-64 sm:w-80 opacity-5 -rotate-12 transform translate-x-1/4 -translate-y-1/4"
-        alt="Decor">
+        class="absolute top-0 right-0 w-64 sm:w-80 opacity-5 -rotate-12 translate-x-1/4 -translate-y-1/4" alt="Decor">
       <img src="{{ asset('img/element.png') }}"
-        class="absolute bottom-0 left-0 w-72 sm:w-96 opacity-5 rotate-45 transform -translate-x-1/3 translate-y-1/4"
-        alt="Decor">
+        class="absolute bottom-0 left-0 w-72 sm:w-96 opacity-5 rotate-45 -translate-x-1/3 translate-y-1/4" alt="Decor">
     </div>
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
       <nav class="mb-3" data-aos="fade-down">
         <a href="{{ route('shop') }}"
           class="inline-flex items-center text-xs sm:text-sm font-bold text-gray-400 hover:text-secondary transition-colors mb-6 sm:mb-8 group">
-          <i class="fa-solid fa-arrow-left-long mr-2 transform group-hover:-translate-x-2 transition-transform"></i>
+          <i class="fa-solid fa-arrow-left-long mr-2 group-hover:-translate-x-2 transition-transform"></i>
           {{ __('Back to Shop') }}
         </a>
       </nav>
@@ -24,13 +22,13 @@
             class="bg-white p-3 sm:p-4 rounded-[2rem] sm:rounded-[2.5rem] shadow-xl border border-[#e6e2d8] overflow-hidden group">
             <div
               class="aspect-[4/5] w-full bg-gray-100 rounded-[1.5rem] sm:rounded-[2rem] overflow-hidden flex items-center justify-center">
-              {!! $product->picture
-                  ? '<img src="' .
-                      asset('storage/' . $product->picture) .
-                      '" alt="' .
-                      $product->name .
-                      '" class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110">'
-                  : '<i class="fa-solid fa-image text-gray-300 text-6xl sm:text-8xl transition-transform duration-700 group-hover:scale-110"></i>' !!}
+              @if ($product->picture)
+                <img src="{{ asset('storage/' . $product->picture) }}" alt="{{ $product->name }}"
+                  class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110">
+              @else
+                <i
+                  class="fa-solid fa-image text-gray-300 text-6xl sm:text-8xl transition-transform duration-700 group-hover:scale-110"></i>
+              @endif
             </div>
           </div>
         </div>
@@ -49,14 +47,15 @@
 
           <div class="py-6 sm:py-8 border-y border-[#e6e2d8] mb-6 sm:mb-8">
             <h3 class="text-primary font-bold uppercase tracking-widest text-xs sm:text-sm mb-3 sm:mb-4 font-header">
-              {{ __('Description') }}</h3>
+              {{ __('Description') }}
+            </h3>
             <article
-              class="prose max-w-none font-sans text-gray-600 leading-snug 
-                          prose-p:text-xs sm:prose-p:text-sm md:prose-p:text-base
-                          prose-li:text-xs sm:prose-li:text-sm md:prose-li:text-base
-                          prose-p:mb-2 prose-p:mt-0 prose-p:leading-snug
-                          prose-ul:list-disc prose-ul:my-2 prose-li:my-0
-                          prose-strong:text-primary prose-strong:font-bold">
+              class="prose max-w-none font-sans text-gray-600 leading-snug
+                prose-p:text-xs sm:prose-p:text-sm md:prose-p:text-base
+                prose-li:text-xs sm:prose-li:text-sm md:prose-li:text-base
+                prose-p:mb-2 prose-p:mt-0 prose-p:leading-snug
+                prose-ul:list-disc prose-ul:my-2 prose-li:my-0
+                prose-strong:text-primary prose-strong:font-bold">
               {!! $product->description !!}
             </article>
           </div>
@@ -71,8 +70,8 @@
             );
           @endphp
 
-          <a href="https://wa.me/628123456789?text={{ $waMessage }}" target="_blank"
-            class="w-full bg-primary text-white py-4 sm:py-5 rounded-full font-bold text-sm sm:text-base shadow-lg hover:bg-secondary transition-all transform hover:-translate-y-1 flex items-center justify-center gap-2 sm:gap-3 active:scale-95">
+          <a href="https://wa.me/628123456789?text={{ $waMessage }}" target="_blank" rel="noopener noreferrer"
+            class="w-full bg-primary text-white py-4 sm:py-5 rounded-full font-bold text-sm sm:text-base shadow-lg hover:bg-secondary transition-all hover:-translate-y-1 flex items-center justify-center gap-2 sm:gap-3 active:scale-95">
             <i class="fa-brands fa-whatsapp text-xl sm:text-2xl"></i>
             {{ __('Order via WhatsApp') }}
           </a>
@@ -80,7 +79,6 @@
       </div>
 
       <section class="mt-20 sm:mt-32" data-aos="fade-up">
-
         <div
           class="flex flex-col md:flex-row items-center justify-between mb-8 sm:mb-12 border-b border-[#e6e2d8] pb-4 sm:pb-6 gap-4">
           <div class="text-center md:text-left">
@@ -96,20 +94,17 @@
               @endif
             </h2>
           </div>
-
         </div>
 
-        <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-8">
-
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-8">
           @forelse ($relatedProducts as $item)
             <a href="{{ route('product.show', $item->slug) }}" class="group block h-full">
               <div
                 class="relative bg-white rounded-xl sm:rounded-2xl overflow-hidden border border-[#e6e2d8] mb-3 sm:mb-4 shadow-sm hover:shadow-md transition-all duration-300 aspect-[3/4]">
-
                 <div class="w-full h-full flex items-center justify-center bg-gray-50 overflow-hidden">
                   @if ($item->picture)
                     <img src="{{ asset('storage/' . $item->picture) }}" alt="{{ $item->name }}"
-                      class="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-110">
+                      class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
                   @else
                     <div class="text-center text-gray-300 group-hover:text-primary transition-colors duration-300">
                       <i class="fa-solid fa-image text-3xl sm:text-4xl mb-1 sm:mb-2"></i>
@@ -122,7 +117,8 @@
                   class="absolute inset-x-0 bottom-0 p-3 sm:p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex justify-center">
                   <span
                     class="bg-white/90 backdrop-blur-sm text-primary text-[10px] sm:text-xs font-bold uppercase tracking-widest px-3 py-1.5 sm:px-4 sm:py-2 rounded-full shadow-lg">
-                    {{ __('Detail') }} </span>
+                    {{ __('Detail') }}
+                  </span>
                 </div>
               </div>
 
@@ -154,9 +150,7 @@
             </div>
           @endforelse
         </div>
-
       </section>
-
     </div>
   </main>
 </x-layouts>
