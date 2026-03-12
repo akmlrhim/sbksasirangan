@@ -10,11 +10,11 @@
                 const params = new URLSearchParams(window.location.search);
                 this.activeCategory = params.get('category') ?? '';
                 this.search = params.get('search') ?? '';
-                this.fetchData(window.location.href);
+                this.fetchData(window.location.href, false);
             });
         },
     
-        async fetchData(url) {
+        async fetchData(url, scroll = true) {
             if (!url) return;
             this.isLoading = true;
             window.history.pushState({}, '', url);
@@ -25,7 +25,9 @@
                 });
                 const html = await response.text();
                 document.getElementById('fragment-container').innerHTML = html;
-                document.getElementById('scroll-target').scrollIntoView({ behavior: 'smooth' });
+                if (scroll) {
+                    document.getElementById('scroll-target').scrollIntoView({ behavior: 'smooth' });
+                }
             } catch (error) {
                 console.error('Error:', error);
             } finally {
@@ -40,15 +42,15 @@
     
             const queryString = params.toString();
             const url = queryString ? `{{ route('insight') }}?${queryString}` : `{{ route('insight') }}`;
-            this.fetchData(url);
+            this.fetchData(url, false);
         },
     
         handleFragmentClick(event) {
             const link = event.target.closest('a');
             if (!link) return;
-            if (link.classList.contains('read-more-link') || link.closest('.read-more-link')) return;
+            if (link.classList.contains('read-more-link')) return;
             event.preventDefault();
-            this.fetchData(link.href);
+            this.fetchData(link.href, true);
         }
     }">
 
@@ -68,9 +70,9 @@
         </p>
       </div>
 
-      @if ($posts->count() > 0 || request('search') || request('category'))
+      @if ($posts->isNotEmpty() || request('search') || request('category'))
         <div class="max-w-xl mx-auto mb-10 sm:mb-16" data-aos="fade-up">
-          <form @submit.prevent="applyFilter()" class="relative group">
+          <form @submit.prevent="applyFilter()" class="relative">
             <input type="text" x-model="search" placeholder="{{ __('Search articles...') }}"
               class="w-full pl-5 sm:pl-6 pr-12 sm:pr-16 py-3 sm:py-4 rounded-full bg-white border border-[#e6e2d8] focus:border-secondary focus:ring-0 text-sm sm:text-base text-primary placeholder-gray-400 shadow-inner transition-all duration-300">
             <button type="submit"
@@ -80,7 +82,7 @@
           </form>
         </div>
 
-        <div class="flex flex-wrap justify-center gap-2 sm:gap-4 mb-8 sm:mb-12" data-aos="fade-up">
+        <div class="flex flex-wrap justify-center gap-2 sm:gap-3 mb-8 sm:mb-12" data-aos="fade-up">
           <button @click="activeCategory = ''; search = ''; applyFilter()"
             :class="!activeCategory ? 'bg-primary text-white shadow-lg' :
                 'bg-white text-gray-500 hover:text-primary border border-[#e6e2d8] shadow-sm'"
@@ -103,7 +105,7 @@
         :class="{ 'opacity-50 pointer-events-none': isLoading }" class="transition-opacity duration-300 min-h-[400px]">
 
         @fragment('posts-area')
-          @if ($posts->count() > 0)
+          @if ($posts->isNotEmpty())
             @php
               $isFrontPage = $posts->onFirstPage() && !request('search') && !request('category');
             @endphp

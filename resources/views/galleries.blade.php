@@ -75,9 +75,9 @@
             </button>
 
             @foreach ($galleries as $item)
-              <button @click="activeTab = '{{ $item->id }}'"
+              <button @click="activeTab = '{{ (string) $item->id }}'"
                 class="whitespace-nowrap text-xs sm:text-sm capitalize transition-all duration-300 pb-1 border-b-[1.5px] sm:border-b-2 font-header outline-none"
-                :class="activeTab === '{{ $item->id }}' ? 'text-primary font-bold border-primary' :
+                :class="activeTab === '{{ (string) $item->id }}' ? 'text-primary font-bold border-primary' :
                     'text-gray-400 font-medium border-transparent hover:text-primary'">
                 {{ $item->title }}
               </button>
@@ -86,11 +86,12 @@
         </div>
       </div>
 
-      <div class="mb-8 sm:mb-12 min-h-[50px] sm:min-h-[60px]" x-show="activeTab !== 'all'"
-        x-transition:enter="transition ease-out duration-500" x-transition:enter-start="opacity-0"
-        x-transition:enter-end="opacity-100" style="display: none;">
+      <div x-show="activeTab !== 'all'" x-transition:enter="transition ease-out duration-500"
+        x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
+        x-transition:leave="transition ease-in duration-300" x-transition:leave-start="opacity-100"
+        x-transition:leave-end="opacity-0" class="mb-8 sm:mb-12 min-h-[50px] sm:min-h-[60px]">
         @foreach ($galleries as $descItem)
-          <div x-show="activeTab === '{{ $descItem->id }}'" style="display: none;"
+          <div x-show="activeTab === '{{ (string) $descItem->id }}'"
             class="max-w-3xl mx-auto text-center space-y-3 sm:space-y-4">
             <h3 class="text-xl sm:text-2xl font-header text-primary">{{ $descItem->title }}</h3>
             <div class="h-0.5 w-12 sm:w-16 bg-secondary mx-auto"></div>
@@ -113,7 +114,7 @@
           </span>
         </div>
 
-        <div x-show="!isLoading" style="display: none;">
+        <div x-show="!isLoading">
           @if ($galleries->isEmpty())
             <div
               class="flex flex-col items-center justify-center py-16 sm:py-24 text-center border-2 border-dashed border-primary/10 rounded-2xl sm:rounded-3xl">
@@ -132,15 +133,14 @@
                   $images = is_string($item->images) ? json_decode($item->images, true) : $item->images;
                   $images = is_array($images) ? array_filter($images) : [];
                   $itemTitle = e($item->title);
+                  $itemId = (string) $item->id;
                 @endphp
 
                 @foreach ($images as $image)
                   @php $imagePath = asset('storage/' . $image); @endphp
-                  <div x-show="activeTab === 'all' || activeTab === '{{ $item->id }}'"
-                    x-transition:enter="transition ease-out duration-700"
-                    x-transition:enter-start="opacity-0 translate-y-8"
-                    x-transition:enter-end="opacity-100 translate-y-0" class="break-inside-avoid group relative"
-                    style="display: none;">
+                  <div x-show="activeTab === 'all' || activeTab === '{{ $itemId }}'"
+                    x-transition:enter="transition ease-out duration-500" x-transition:enter-start="opacity-0 scale-95"
+                    x-transition:enter-end="opacity-100 scale-100" class="break-inside-avoid group relative">
 
                     <div
                       class="bg-white p-1.5 sm:p-2 md:p-2.5 rounded-xl shadow-sm hover:shadow-xl transition-all duration-500 border border-primary/5 cursor-zoom-in"
@@ -159,7 +159,7 @@
       </div>
     </section>
 
-    <div x-show="lightboxOpen" style="display: none;" x-transition:enter="transition ease-out duration-300"
+    <div x-show="lightboxOpen" x-transition:enter="transition ease-out duration-300"
       x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
       x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100"
       x-transition:leave-end="opacity-0"

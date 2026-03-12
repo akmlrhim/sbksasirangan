@@ -10,11 +10,11 @@
                 const params = new URLSearchParams(window.location.search);
                 this.activeCategory = params.get('category') ?? '';
                 this.search = params.get('search') ?? '';
-                this.fetchData(window.location.href);
+                this.fetchData(window.location.href, false);
             });
         },
     
-        async fetchData(url) {
+        async fetchData(url, scroll = true) {
             if (!url) return;
             this.isLoading = true;
             window.history.pushState({}, '', url);
@@ -25,7 +25,9 @@
                 });
                 const html = await response.text();
                 document.getElementById('product-container').innerHTML = html;
-                document.getElementById('scroll-target').scrollIntoView({ behavior: 'smooth' });
+                if (scroll) {
+                    document.getElementById('scroll-target').scrollIntoView({ behavior: 'smooth' });
+                }
             } catch (error) {
                 console.error('Error:', error);
             } finally {
@@ -40,7 +42,7 @@
     
             const queryString = params.toString();
             const url = queryString ? `{{ route('shop') }}?${queryString}` : `{{ route('shop') }}`;
-            this.fetchData(url);
+            this.fetchData(url, false);
         },
     
         handlePagination(e) {
@@ -48,7 +50,7 @@
             if (!link) return;
             if (link.closest('.product-card')) return;
             e.preventDefault();
-            this.fetchData(link.href);
+            this.fetchData(link.href, true);
         }
     }">
 
