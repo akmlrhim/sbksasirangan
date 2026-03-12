@@ -63,7 +63,7 @@
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10" id="scroll-target">
 
-      <div class="text-center mb-8 sm:mb-12" data-aos="fade-down">
+      <div class="text-center mb-8 sm:mb-12">
         <h1 class="font-header text-3xl sm:text-4xl md:text-5xl text-primary leading-tight">
           {{ __('Our') }} <span class="italic text-secondary">{{ __('Collection') }}</span>
         </h1>
@@ -74,8 +74,7 @@
 
       @if ($products->isNotEmpty())
         <div
-          class="mb-8 sm:mb-10 flex flex-col lg:flex-row justify-between items-center gap-4 sm:gap-6 bg-white p-4 sm:p-5 rounded-xl sm:rounded-2xl shadow-sm border border-[#e6e2d8]"
-          data-aos="fade-up">
+          class="mb-8 sm:mb-10 flex flex-col lg:flex-row justify-between items-center gap-4 sm:gap-6 bg-white p-4 sm:p-5 rounded-xl sm:rounded-2xl shadow-sm border border-[#e6e2d8]">
 
           <div class="flex flex-wrap justify-center lg:justify-start gap-2 w-full lg:w-auto flex-1">
             <button @click="activeCategory = ''; search = ''; applyFilter()"
@@ -106,15 +105,13 @@
         </div>
       @endif
 
-      <div id="product-container" @click="handlePagination($event)"
-        :class="{ 'opacity-50 pointer-events-none': isLoading }" class="transition-opacity duration-300 min-h-[400px]">
+      <div id="product-container" @click="handlePagination($event)" class="min-h-[400px]">
 
         @fragment('products-list')
           <div class="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 md:gap-8">
             @forelse ($products as $product)
               <div
-                class="product-card group relative overflow-hidden rounded-xl sm:rounded-2xl shadow-lg border border-[#e6e2d8] h-full"
-                data-aos="fade-up">
+                class="product-card group relative overflow-hidden rounded-xl sm:rounded-2xl shadow-lg border border-[#e6e2d8] h-full">
                 <a href="{{ route('product.show', $product->slug) }}" class="block h-full">
                   <div class="aspect-[3/4] w-full bg-gray-200 relative overflow-hidden">
 
@@ -148,7 +145,7 @@
               </div>
 
             @empty
-              <div class="col-span-full py-16 sm:py-20 text-center" data-aos="fade-up">
+              <div class="col-span-full py-16 sm:py-20 text-center">
                 <div
                   class="w-16 h-16 sm:w-20 sm:h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4 text-gray-400">
                   <i class="fa-solid fa-box-open text-2xl sm:text-3xl"></i>
@@ -172,7 +169,7 @@
           </div>
 
           @if ($products->isNotEmpty())
-            <div class="flex justify-center mt-12 sm:mt-16 pb-8 sm:pb-12" data-aos="fade-up">
+            <div class="flex justify-center mt-12 sm:mt-16 pb-8 sm:pb-12">
               <nav class="flex items-center gap-1.5 sm:gap-2 p-1.5 sm:p-2 bg-white/50 backdrop-blur-sm rounded-full">
 
                 @if ($products->onFirstPage())

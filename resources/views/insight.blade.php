@@ -61,7 +61,7 @@
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10" id="scroll-target">
 
-      <div class="text-center mb-8 sm:mb-12" data-aos="fade-down">
+      <div class="text-center mb-8 sm:mb-12">
         <h1 class="font-header text-4xl sm:text-5xl md:text-6xl text-primary leading-tight">
           {{ __('Our') }} <span class="italic text-secondary">{{ __('Insights') }}</span>
         </h1>
@@ -71,7 +71,7 @@
       </div>
 
       @if ($posts->isNotEmpty() || request('search') || request('category'))
-        <div class="max-w-xl mx-auto mb-10 sm:mb-16" data-aos="fade-up">
+        <div class="max-w-xl mx-auto mb-10 sm:mb-16">
           <form @submit.prevent="applyFilter()" class="relative">
             <input type="text" x-model="search" placeholder="{{ __('Search articles...') }}"
               class="w-full pl-5 sm:pl-6 pr-12 sm:pr-16 py-3 sm:py-4 rounded-full bg-white border border-[#e6e2d8] focus:border-secondary focus:ring-0 text-sm sm:text-base text-primary placeholder-gray-400 shadow-inner transition-all duration-300">
@@ -82,7 +82,7 @@
           </form>
         </div>
 
-        <div class="flex flex-wrap justify-center gap-2 sm:gap-3 mb-8 sm:mb-12" data-aos="fade-up">
+        <div class="flex flex-wrap justify-center gap-2 sm:gap-3 mb-8 sm:mb-12">
           <button @click="activeCategory = ''; search = ''; applyFilter()"
             :class="!activeCategory ? 'bg-primary text-white shadow-lg' :
                 'bg-white text-gray-500 hover:text-primary border border-[#e6e2d8] shadow-sm'"
@@ -101,8 +101,7 @@
         </div>
       @endif
 
-      <div id="fragment-container" @click="handleFragmentClick($event)"
-        :class="{ 'opacity-50 pointer-events-none': isLoading }" class="transition-opacity duration-300 min-h-[400px]">
+      <div id="fragment-container" @click="handleFragmentClick($event)" class="min-h-[400px]">
 
         @fragment('posts-area')
           @if ($posts->isNotEmpty())
@@ -112,7 +111,7 @@
 
             @if ($isFrontPage)
               @php $featured = $posts->first(); @endphp
-              <div class="mb-12 sm:mb-20" data-aos="fade-up">
+              <div class="mb-12 sm:mb-20">
                 <div
                   class="group relative bg-white rounded-2xl sm:rounded-3xl overflow-hidden shadow-lg border border-[#e6e2d8] grid grid-cols-1 lg:grid-cols-2">
                   <div class="relative h-60 sm:h-72 lg:h-auto overflow-hidden">
@@ -156,8 +155,7 @@
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 mb-16 sm:mb-20">
               @foreach ($isFrontPage ? $posts->slice(1) : $posts as $post)
                 <div
-                  class="bg-white rounded-xl sm:rounded-2xl overflow-hidden shadow-lg border border-[#e6e2d8] transition-all duration-300 group"
-                  data-aos="fade-up">
+                  class="bg-white rounded-xl sm:rounded-2xl overflow-hidden shadow-lg border border-[#e6e2d8] transition-all duration-300 group">
                   <div class="relative h-48 sm:h-60 overflow-hidden bg-gray-100 flex items-center justify-center">
                     @if ($post->cover_image)
                       <img src="{{ asset('storage/' . $post->cover_image) }}"
@@ -193,7 +191,7 @@
               </div>
             @endif
           @else
-            <div class="flex flex-col items-center justify-center py-16 sm:py-24 text-center" data-aos="fade-up">
+            <div class="flex flex-col items-center justify-center py-16 sm:py-24 text-center">
               <div
                 class="w-16 h-16 sm:w-20 sm:h-20 bg-gray-100 rounded-full flex items-center justify-center mb-6 sm:mb-8">
                 <i
