@@ -1,5 +1,5 @@
 <x-layouts :title="$title">
-  <main class="w-full min-h-screen bg-blue-50" style="font-family: 'Poppins', sans-serif;" x-data="{
+  <main class="w-full min-h-screen bg-blue-50" x-data="{
       activeTab: 'all',
       isLoading: true,
       lightboxOpen: false,
