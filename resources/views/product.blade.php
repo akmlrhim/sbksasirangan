@@ -36,7 +36,7 @@
         <div class="lg:col-span-5 flex flex-col" data-aos="fade-left">
           <div class="mb-5 sm:mb-6">
             <span
-              class="bg-secondary/10 text-secondary px-3 py-1 sm:px-4 sm:py-1.5 rounded-full text-[10px] sm:text-xs font-bold uppercase tracking-widest">
+              class="bg-secondary/10 text-secondary px-3 py-1 sm:px-4 sm:py-1.5 rounded-md text-[7px] sm:text-xs font-bold uppercase tracking-widest">
               {{ $product->category }}
             </span>
             <h1
